@@ -15,7 +15,8 @@ import {
   Code,
   Bot,
   Menu,
-  X
+  X,
+  Zap
 } from 'lucide-react'
 import DocsSection from './components/DocsSection'
 import ExamplesSection from './components/ExamplesSection'
@@ -259,8 +260,7 @@ function App() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 whileHover={{ y: -5 }}
-                className="card group cursor-pointer"
-                onClick={() => setActiveFeature(index)}
+                className="card group"
               >
                 <div className={`feature-icon bg-gradient-to-br ${feature.gradient}`}>
                   {feature.icon}

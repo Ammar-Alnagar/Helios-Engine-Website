@@ -1,8 +1,53 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@config {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"]
+
+  theme: {
+    extend: {
+      colors: {
+        'helios-orange': '#FF6B35',
+        'helios-orange-light': '#FF8F65',
+        'helios-orange-dark': '#E55A2B',
+        'helios-blue': '#2563EB',
+        'helios-blue-light': '#60A5FA',
+        'helios-gray': '#6B7280',
+        'helios-gray-light': '#9CA3AF',
+        'helios-gray-dark': '#374151'
+      },
+      fontFamily: {
+        'mono': ['JetBrains Mono', 'monospace'],
+        'sans': ['Inter', 'system-ui', 'sans-serif']
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.5s ease-out',
+        'slide-in-left': 'slideInLeft 0.5s ease-out',
+        'slide-in-right': 'slideInRight 0.5s ease-out'
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' }
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' }
+        },
+        slideInLeft: {
+          '0%': { transform: 'translateX(-20px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' }
+        },
+        slideInRight: {
+          '0%': { transform: 'translateX(20px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' }
+        }
+      }
+    }
+  }
+}
 
 @layer base {
   html {
@@ -10,21 +55,55 @@
   }
 
   body {
-    @apply font-sans text-gray-900 bg-white;
+    font-family: Inter, system-ui, sans-serif;
+    color: rgb(17 24 39);
+    background-color: rgb(255 255 255);
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-helios-orange hover:bg-helios-orange-dark text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl;
+    background-color: #FF6B35;
+    color: rgb(255 255 255);
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-primary:hover {
+    background-color: #E55A2B;
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-gray-900 font-medium px-6 py-3 rounded-lg border border-gray-300 transition-colors duration-200 shadow-lg hover:shadow-xl;
+    background-color: rgb(255 255 255);
+    color: rgb(17 24 39);
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(209 213 219);
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  .btn-secondary:hover {
+    background-color: rgb(249 250 251);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300;
+    background-color: rgb(255 255 255);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    padding: 1.5rem;
+    border: 1px solid rgb(243 244 246);
+    transition: box-shadow 0.3s;
+  }
+
+  .card:hover {
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .gradient-bg {
@@ -32,6 +111,12 @@
   }
 
   .feature-icon {
-    @apply w-12 h-12 rounded-lg bg-gradient-to-br from-helios-orange to-helios-orange-dark p-3 text-white mb-4;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(to bottom right, #FF6B35, #E55A2B);
+    padding: 0.75rem;
+    color: rgb(255 255 255);
+    margin-bottom: 1rem;
   }
 }
