@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans text-gray-900 bg-white;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-helios-orange hover:bg-helios-orange-dark text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl;
+  }
+
+  .btn-secondary {
+    @apply bg-white hover:bg-gray-50 text-gray-900 font-medium px-6 py-3 rounded-lg border border-gray-300 transition-colors duration-200 shadow-lg hover:shadow-xl;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300;
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, #FF6B35 0%, #2563EB 100%);
+  }
+
+  .feature-icon {
+    @apply w-12 h-12 rounded-lg bg-gradient-to-br from-helios-orange to-helios-orange-dark p-3 text-white mb-4;
+  }
+}
