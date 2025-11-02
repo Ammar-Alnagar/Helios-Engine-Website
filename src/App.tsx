@@ -21,7 +21,6 @@ import {
   Sun
 } from 'lucide-react'
 import DocsSection from './components/DocsSection'
-import ExamplesSection from './components/ExamplesSection'
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -118,7 +117,6 @@ function App() {
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors">Features</a>
               <a href="https://docs.rs/helios-engine/0.3.6/helios_engine/" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors">Docs</a>
-              <a href="#examples" className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors">Examples</a>
               <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-orange-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -173,13 +171,6 @@ function App() {
                 >
                   Docs
                 </a>
-                <a
-                  href="#examples"
-                  className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Examples
-                </a>
                 <button
                   onClick={() => {
                     toggleDarkMode()
@@ -215,10 +206,15 @@ function App() {
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-800 text-sm font-medium mb-8">
+            <a
+              href="https://crates.io/crates/helios-engine"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-800 text-sm font-medium mb-8 hover:bg-orange-200 transition-colors"
+            >
               <Star className="w-4 h-4 mr-2" />
               v0.3.6 - Latest Release
-            </div>
+            </a>
 
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
               🔥 <span className="bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">Helios Engine</span>
@@ -429,9 +425,6 @@ function App() {
 
       {/* Documentation Section */}
       <DocsSection />
-
-      {/* Examples Section */}
-      <ExamplesSection />
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-orange-600 to-orange-500">
