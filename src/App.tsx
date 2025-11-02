@@ -11,7 +11,6 @@ import {
   Star,
   Download,
   ChevronRight,
-  Sparkles,
   Code,
   Bot,
   Menu,
@@ -107,9 +106,11 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
+              <img
+                src="https://raw.githubusercontent.com/Ammar-Alnagar/Helios-Engine/master/Helios_Engine_Logo.png"
+                alt="Helios Engine Logo"
+                className="w-8 h-8 rounded-lg"
+              />
               <span className="text-xl font-bold text-gray-900 dark:text-white">Helios Engine</span>
             </div>
 
@@ -124,13 +125,15 @@ function App() {
               >
                 {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
-              <button
-                onClick={() => navigator.clipboard.writeText('git clone https://github.com/Ammar-Alnagar/Helios-Engine.git')}
-                className="btn-primary text-sm px-4 py-2"
+              <a
+                href="https://github.com/Ammar-Alnagar/Helios-Engine"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-primary text-sm px-4 py-2 inline-block"
               >
                 <Github className="w-4 h-4 inline mr-2" />
                 Clone Repo
-              </button>
+              </a>
             </div>
 
             {/* Mobile Menu Button */}
@@ -181,16 +184,16 @@ function App() {
                   {isDarkMode ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
                   {isDarkMode ? 'Light Mode' : 'Dark Mode'}
                 </button>
-                <button
-                  onClick={() => {
-                    navigator.clipboard.writeText('git clone https://github.com/Ammar-Alnagar/Helios-Engine.git')
-                    setIsMobileMenuOpen(false)
-                  }}
-                  className="btn-primary w-full text-center"
+                <a
+                  href="https://github.com/Ammar-Alnagar/Helios-Engine"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="btn-primary w-full text-center inline-block"
                 >
                   <Github className="w-4 h-4 inline mr-2" />
                   Clone Repo
-                </button>
+                </a>
               </div>
             </motion.div>
           )}
@@ -456,15 +459,17 @@ function App() {
                 Get Started Now
               </motion.a>
 
-              <motion.button
+              <motion.a
+                href="https://github.com/Ammar-Alnagar/Helios-Engine"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => navigator.clipboard.writeText('git clone https://github.com/Ammar-Alnagar/Helios-Engine.git')}
-                className="border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white hover:text-orange-600 transition-colors"
+                className="border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white hover:text-orange-600 transition-colors inline-block"
               >
                 <Github className="w-5 h-5 inline mr-2" />
                 Clone Repository
-              </motion.button>
+              </motion.a>
             </div>
           </motion.div>
         </div>
@@ -476,9 +481,11 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
+                <img
+                  src="https://raw.githubusercontent.com/Ammar-Alnagar/Helios-Engine/master/Helios_Engine_Logo.png"
+                  alt="Helios Engine Logo"
+                  className="w-8 h-8 rounded-lg"
+                />
                 <span className="text-xl font-bold">Helios Engine</span>
               </div>
               <p className="text-gray-400 dark:text-gray-500 text-sm leading-relaxed">
@@ -489,30 +496,30 @@ function App() {
             <div>
               <h4 className="font-semibold mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-500">
-                <li><a href="#" className="hover:text-white dark:hover:text-gray-300 transition-colors">Installation</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Quick Start</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Examples</a></li>
+                <li><a href="https://docs.rs/helios-engine/0.3.6/helios_engine/" target="_blank" rel="noopener noreferrer" className="hover:text-white dark:hover:text-gray-300 transition-colors">Installation</a></li>
+                <li><a href="https://docs.rs/helios-engine/0.3.6/helios_engine/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Quick Start</a></li>
+                <li><a href="https://docs.rs/helios-engine/0.3.6/helios_engine/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">API Reference</a></li>
+                <li><a href="https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/examples" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Examples</a></li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-semibold mb-4">Community</h4>
               <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-500">
-                <li><a href="#" className="hover:text-white transition-colors">GitHub</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Issues</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Discussions</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contributing</a></li>
+                <li><a href="https://github.com/Ammar-Alnagar/Helios-Engine" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a></li>
+                <li><a href="https://github.com/Ammar-Alnagar/Helios-Engine/issues" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Issues</a></li>
+                <li><a href="https://github.com/Ammar-Alnagar/Helios-Engine/discussions" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Discussions</a></li>
+                <li><a href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Contributing</a></li>
               </ul>
             </div>
 
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
               <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-500">
-                <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Changelog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">License</a></li>
+                <li><a href="https://docs.rs/helios-engine/0.3.6/helios_engine/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><a href="https://github.com/Ammar-Alnagar/Helios-Engine/releases" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="https://github.com/Ammar-Alnagar/Helios-Engine/releases" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Changelog</a></li>
+                <li><a href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">License</a></li>
               </ul>
             </div>
           </div>
