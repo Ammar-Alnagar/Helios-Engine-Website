@@ -2,50 +2,48 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-@config {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"]
+/* Tailwind CSS v4 Configuration */
+@layer theme {
+  :root {
+    /* Colors */
+    --color-helios-orange: #FF6B35;
+    --color-helios-orange-light: #FF8F65;
+    --color-helios-orange-dark: #E55A2B;
+    --color-helios-blue: #2563EB;
+    --color-helios-blue-light: #60A5FA;
+    --color-helios-gray: #6B7280;
+    --color-helios-gray-light: #9CA3AF;
+    --color-helios-gray-dark: #374151;
 
-  theme: {
-    extend: {
-      colors: {
-        'helios-orange': '#FF6B35',
-        'helios-orange-light': '#FF8F65',
-        'helios-orange-dark': '#E55A2B',
-        'helios-blue': '#2563EB',
-        'helios-blue-light': '#60A5FA',
-        'helios-gray': '#6B7280',
-        'helios-gray-light': '#9CA3AF',
-        'helios-gray-dark': '#374151'
-      },
-      fontFamily: {
-        'mono': ['JetBrains Mono', 'monospace'],
-        'sans': ['Inter', 'system-ui', 'sans-serif']
-      },
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.5s ease-out',
-        'slide-in-left': 'slideInLeft 0.5s ease-out',
-        'slide-in-right': 'slideInRight 0.5s ease-out'
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' }
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' }
-        },
-        slideInLeft: {
-          '0%': { transform: 'translateX(-20px)', opacity: '0' },
-          '100%': { transform: 'translateX(0)', opacity: '1' }
-        },
-        slideInRight: {
-          '0%': { transform: 'translateX(20px)', opacity: '0' },
-          '100%': { transform: 'translateX(0)', opacity: '1' }
-        }
-      }
-    }
+    /* Font Families */
+    --font-family-mono: JetBrains Mono, monospace;
+    --font-family-sans: Inter, system-ui, sans-serif;
+
+    /* Animations */
+    --animate-fade-in: fadeIn 0.5s ease-in-out;
+    --animate-slide-up: slideUp 0.5s ease-out;
+    --animate-slide-in-left: slideInLeft 0.5s ease-out;
+    --animate-slide-in-right: slideInRight 0.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes slideInLeft {
+    0% { transform: translateX(-20px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideInRight {
+    0% { transform: translateX(20px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
   }
 }
 
@@ -63,7 +61,7 @@
 
 @layer components {
   .btn-primary {
-    background-color: #FF6B35;
+    background-color: var(--color-helios-orange);
     color: rgb(255 255 255);
     font-weight: 500;
     padding: 0.75rem 1.5rem;
@@ -73,7 +71,7 @@
   }
 
   .btn-primary:hover {
-    background-color: #E55A2B;
+    background-color: var(--color-helios-orange-dark);
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
@@ -107,14 +105,14 @@
   }
 
   .gradient-bg {
-    background: linear-gradient(135deg, #FF6B35 0%, #2563EB 100%);
+    background: linear-gradient(135deg, var(--color-helios-orange) 0%, var(--color-helios-blue) 100%);
   }
 
   .feature-icon {
     width: 3rem;
     height: 3rem;
     border-radius: 0.5rem;
-    background: linear-gradient(to bottom right, #FF6B35, #E55A2B);
+    background: linear-gradient(to bottom right, var(--color-helios-orange), var(--color-helios-orange-dark));
     padding: 0.75rem;
     color: rgb(255 255 255);
     margin-bottom: 1rem;
