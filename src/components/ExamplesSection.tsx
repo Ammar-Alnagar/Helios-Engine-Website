@@ -149,7 +149,7 @@ async fn main() -> helios_engine::Result<()> {
   }
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-50 dark:bg-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -158,10 +158,10 @@ async fn main() -> helios_engine::Result<()> {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             Interactive Code Examples
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             Explore our comprehensive collection of examples ranging from basic chatbots to advanced
             multi-agent systems and RAG implementations.
           </p>
@@ -190,19 +190,19 @@ async fn main() -> helios_engine::Result<()> {
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-semibold text-gray-900 mb-3">
+                  <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-3">
                     {example.title}
                   </h3>
 
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-gray-600 dark:text-gray-300 mb-6">
                     {example.description}
                   </p>
 
                   <div className="space-y-2">
-                    <h4 className="font-medium text-gray-900">Features:</h4>
+                    <h4 className="font-medium text-gray-900 dark:text-white">Features:</h4>
                     <ul className="space-y-1">
                       {example.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-center text-sm text-gray-600">
+                        <li key={featureIndex} className="flex items-center text-sm text-gray-600 dark:text-gray-300">
                           <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mr-2"></div>
                           {feature}
                         </li>
@@ -265,22 +265,26 @@ async fn main() -> helios_engine::Result<()> {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">Want to explore more examples?</h3>
-          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Want to explore more examples?</h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Browse our complete collection of 20+ examples covering everything from basic usage to advanced features.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.button
+            <motion.a
+              href="https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/examples"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="btn-primary"
+              className="btn-primary inline-block"
             >
               <FileText className="w-5 h-5 inline mr-2" />
               View All Examples
-            </motion.button>
+            </motion.a>
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => navigator.clipboard.writeText('git clone https://github.com/Ammar-Alnagar/Helios-Engine.git')}
               className="btn-secondary"
             >
               <Code className="w-5 h-5 inline mr-2" />

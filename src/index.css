@@ -5,7 +5,7 @@
 /* Tailwind CSS v4 Configuration */
 @layer theme {
   :root {
-    /* Colors */
+    /* Light mode colors */
     --color-helios-orange: #FF6B35;
     --color-helios-orange-light: #FF8F65;
     --color-helios-orange-dark: #E55A2B;
@@ -14,6 +14,21 @@
     --color-helios-gray: #6B7280;
     --color-helios-gray-light: #9CA3AF;
     --color-helios-gray-dark: #374151;
+
+    /* Background colors */
+    --color-bg-primary: 255 255 255;
+    --color-bg-secondary: 249 250 251;
+    --color-bg-tertiary: 243 244 246;
+    --color-bg-card: 255 255 255;
+
+    /* Text colors */
+    --color-text-primary: 17 24 39;
+    --color-text-secondary: 107 114 128;
+    --color-text-tertiary: 156 163 175;
+
+    /* Border colors */
+    --color-border: 229 231 235;
+    --color-border-light: 243 244 246;
 
     /* Font Families */
     --font-family-mono: JetBrains Mono, monospace;
@@ -24,6 +39,42 @@
     --animate-slide-up: slideUp 0.5s ease-out;
     --animate-slide-in-left: slideInLeft 0.5s ease-out;
     --animate-slide-in-right: slideInRight 0.5s ease-out;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      /* Dark mode colors */
+      --color-bg-primary: 17 24 39;
+      --color-bg-secondary: 31 41 55;
+      --color-bg-tertiary: 55 65 81;
+      --color-bg-card: 31 41 55;
+
+      /* Text colors */
+      --color-text-primary: 243 244 246;
+      --color-text-secondary: 156 163 175;
+      --color-text-tertiary: 107 114 128;
+
+      /* Border colors */
+      --color-border: 55 65 81;
+      --color-border-light: 31 41 55;
+    }
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --color-bg-primary: 17 24 39;
+    --color-bg-secondary: 31 41 55;
+    --color-bg-tertiary: 55 65 81;
+    --color-bg-card: 31 41 55;
+
+    /* Text colors */
+    --color-text-primary: 243 244 246;
+    --color-text-secondary: 156 163 175;
+    --color-text-tertiary: 107 114 128;
+
+    /* Border colors */
+    --color-border: 55 65 81;
+    --color-border-light: 31 41 55;
   }
 
   @keyframes fadeIn {
@@ -54,8 +105,9 @@
 
   body {
     font-family: Inter, system-ui, sans-serif;
-    color: rgb(17 24 39);
-    background-color: rgb(255 255 255);
+    color: rgb(var(--color-text-primary));
+    background-color: rgb(var(--color-bg-primary));
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
@@ -66,7 +118,7 @@
     font-weight: 500;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
-    transition: background-color 0.2s, box-shadow 0.2s;
+    transition: background-color 0.2s, box-shadow 0.2s, color 0.2s;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 
@@ -76,28 +128,28 @@
   }
 
   .btn-secondary {
-    background-color: rgb(255 255 255);
-    color: rgb(17 24 39);
+    background-color: rgb(var(--color-bg-card));
+    color: rgb(var(--color-text-primary));
     font-weight: 500;
     padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
-    border: 1px solid rgb(209 213 219);
-    transition: background-color 0.2s, box-shadow 0.2s;
+    border: 1px solid rgb(var(--color-border));
+    transition: background-color 0.2s, box-shadow 0.2s, color 0.2s, border-color 0.2s;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 
   .btn-secondary:hover {
-    background-color: rgb(249 250 251);
+    background-color: rgb(var(--color-bg-secondary));
     box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .card {
-    background-color: rgb(255 255 255);
+    background-color: rgb(var(--color-bg-card));
     border-radius: 0.75rem;
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     padding: 1.5rem;
-    border: 1px solid rgb(243 244 246);
-    transition: box-shadow 0.3s;
+    border: 1px solid rgb(var(--color-border-light));
+    transition: box-shadow 0.3s, background-color 0.3s, border-color 0.3s;
   }
 
   .card:hover {
@@ -116,5 +168,21 @@
     padding: 0.75rem;
     color: rgb(255 255 255);
     margin-bottom: 1rem;
+  }
+
+  /* Navigation styles for dark mode */
+  .nav-bg {
+    background-color: rgb(var(--color-bg-card) / 0.8);
+    backdrop-filter: blur(8px);
+    border-color: rgb(var(--color-border-light));
+  }
+
+  /* Terminal/code block styles */
+  .terminal-bg {
+    background-color: rgb(var(--color-bg-tertiary));
+  }
+
+  .terminal-text {
+    color: rgb(var(--color-text-primary));
   }
 }

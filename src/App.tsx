@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Users,
   Database,
@@ -16,13 +16,44 @@ import {
   Bot,
   Menu,
   X,
-  Zap
+  Zap,
+  Moon,
+  Sun
 } from 'lucide-react'
 import DocsSection from './components/DocsSection'
 import ExamplesSection from './components/ExamplesSection'
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+
+  // Initialize dark mode from localStorage or system preference
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      setIsDarkMode(true)
+      document.documentElement.classList.add('dark')
+    } else {
+      setIsDarkMode(false)
+      document.documentElement.classList.remove('dark')
+    }
+  }, [])
+
+  // Toggle dark mode
+  const toggleDarkMode = () => {
+    const newDarkMode = !isDarkMode
+    setIsDarkMode(newDarkMode)
+
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    }
+  }
 
   const features = [
     {
@@ -71,27 +102,37 @@ function App() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-200 z-50">
+      <nav className="fixed top-0 w-full nav-bg border-b z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-gray-900">Helios Engine</span>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">Helios Engine</span>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-orange-600 transition-colors">Features</a>
-              <a href="#docs" className="text-gray-600 hover:text-orange-600 transition-colors">Documentation</a>
-              <a href="#examples" className="text-gray-600 hover:text-orange-600 transition-colors">Examples</a>
-              <a href="https://github.com/Ammar-Alnagar/Helios-Engine" target="_blank" rel="noopener noreferrer" className="btn-primary text-sm px-4 py-2">
+              <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors">Features</a>
+              <a href="https://docs.rs/helios-engine/0.3.6/helios_engine/" target="_blank" rel="noopener noreferrer" className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors">Docs</a>
+              <a href="#examples" className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors">Examples</a>
+              <button
+                onClick={toggleDarkMode}
+                className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:text-orange-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                aria-label="Toggle dark mode"
+              >
+                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+              <button
+                onClick={() => navigator.clipboard.writeText('git clone https://github.com/Ammar-Alnagar/Helios-Engine.git')}
+                className="btn-primary text-sm px-4 py-2"
+              >
                 <Github className="w-4 h-4 inline mr-2" />
-                GitHub
-              </a>
+                Clone Repo
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -113,40 +154,52 @@ function App() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md"
+              className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-white/95 dark:bg-gray-800/95 backdrop-blur-md"
             >
               <div className="px-4 py-6 space-y-4">
                 <a
                   href="#features"
-                  className="block text-gray-600 hover:text-orange-600 transition-colors py-2"
+                  className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Features
                 </a>
                 <a
-                  href="#docs"
-                  className="block text-gray-600 hover:text-orange-600 transition-colors py-2"
+                  href="https://docs.rs/helios-engine/0.3.6/helios_engine/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Documentation
+                  Docs
                 </a>
                 <a
                   href="#examples"
-                  className="block text-gray-600 hover:text-orange-600 transition-colors py-2"
+                  className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Examples
                 </a>
-                <a
-                  href="https://github.com/Ammar-Alnagar/Helios-Engine"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => {
+                    toggleDarkMode()
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="flex items-center w-full text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors py-2"
+                >
+                  {isDarkMode ? <Sun className="w-4 h-4 mr-2" /> : <Moon className="w-4 h-4 mr-2" />}
+                  {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+                </button>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText('git clone https://github.com/Ammar-Alnagar/Helios-Engine.git')
+                    setIsMobileMenuOpen(false)
+                  }}
                   className="btn-primary w-full text-center"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Github className="w-4 h-4 inline mr-2" />
-                  GitHub
-                </a>
+                  Clone Repo
+                </button>
               </div>
             </motion.div>
           )}
@@ -164,7 +217,7 @@ function App() {
           >
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-800 text-sm font-medium mb-8">
               <Star className="w-4 h-4 mr-2" />
-              v0.3.4 - Latest Release
+              v0.3.6 - Latest Release
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
@@ -186,14 +239,17 @@ function App() {
                 Get Started
               </motion.button>
 
-              <motion.button
+              <motion.a
+                href="https://docs.rs/helios-engine/0.3.6/helios_engine/"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="btn-secondary text-lg px-8 py-4"
+                className="btn-secondary text-lg px-8 py-4 inline-block"
               >
                 <BookOpen className="w-5 h-5 inline mr-2" />
                 View Docs
-              </motion.button>
+              </motion.a>
             </div>
 
             {/* Quick Install */}
@@ -213,7 +269,7 @@ function App() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -225,7 +281,7 @@ function App() {
                 className="text-center"
               >
                 <div className="text-3xl md:text-4xl font-bold text-orange-600 mb-2">{stat.value}</div>
-                <div className="text-gray-600 font-medium">{stat.label}</div>
+                <div className="text-gray-600 dark:text-gray-400 font-medium">{stat.label}</div>
               </motion.div>
             ))}
           </div>
@@ -233,7 +289,7 @@ function App() {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-gray-50">
+      <section id="features" className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -242,10 +298,10 @@ function App() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               Powerful Features for Modern AI
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Create intelligent agents that can interact with users, call tools, and maintain conversation context
               with both online and offline local model support.
             </p>
@@ -265,10 +321,10 @@ function App() {
                 <div className={`feature-icon bg-gradient-to-br ${feature.gradient}`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-orange-600 transition-colors">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {feature.description}
                 </p>
                 <div className="mt-4 flex items-center text-orange-600 font-medium">
@@ -282,7 +338,7 @@ function App() {
       </section>
 
       {/* Code Example Section */}
-      <section id="examples" className="py-20 bg-white">
+      <section id="examples" className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -291,10 +347,10 @@ function App() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
               Simple Yet Powerful
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Get started with Helios Engine in minutes with our comprehensive examples and documentation.
             </p>
           </motion.div>
@@ -306,38 +362,38 @@ function App() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Quick Start</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Quick Start</h3>
               <div className="space-y-4 mb-8">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                     <span className="text-orange-600 font-semibold">1</span>
                   </div>
-                  <span className="text-gray-700">Install with cargo</span>
+                  <span className="text-gray-700 dark:text-gray-300">Install with cargo</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                     <span className="text-orange-600 font-semibold">2</span>
                   </div>
-                  <span className="text-gray-700">Initialize configuration</span>
+                  <span className="text-gray-700 dark:text-gray-300">Initialize configuration</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
                     <span className="text-orange-600 font-semibold">3</span>
                   </div>
-                  <span className="text-gray-700">Start chatting with your agent</span>
+                  <span className="text-gray-700 dark:text-gray-300">Start chatting with your agent</span>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-lg p-4">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
                   <Bot className="w-8 h-8 text-orange-600 mb-2" />
-                  <h4 className="font-semibold text-gray-900 mb-1">CLI Tool</h4>
-                  <p className="text-sm text-gray-600">Command-line interface for quick interactions</p>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">CLI Tool</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Command-line interface for quick interactions</p>
                 </div>
-                <div className="bg-gray-50 rounded-lg p-4">
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
                   <Code className="w-8 h-8 text-orange-600 mb-2" />
-                  <h4 className="font-semibold text-gray-900 mb-1">Rust Library</h4>
-                  <p className="text-sm text-gray-600">Use as a dependency in your Rust projects</p>
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">Rust Library</h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-300">Use as a dependency in your Rust projects</p>
                 </div>
               </div>
             </motion.div>
@@ -347,10 +403,10 @@ function App() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="bg-gray-900 rounded-lg p-6 font-mono text-sm"
+              className="terminal-bg rounded-lg p-6 font-mono text-sm"
             >
               <div className="flex items-center justify-between mb-4">
-                <span className="text-white font-medium">Terminal</span>
+                <span className="terminal-text font-medium">Terminal</span>
                 <div className="flex space-x-2">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
                   <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
@@ -362,8 +418,8 @@ function App() {
                 <div>$ cargo install helios-engine</div>
                 <div>$ helios-engine init</div>
                 <div>$ helios-engine chat</div>
-                <div className="text-white">🤖 Hello! I'm your AI assistant powered by Helios Engine.</div>
-                <div className="text-white">💬 What would you like to explore today?</div>
+                <div className="terminal-text">🤖 Hello! I'm your AI assistant powered by Helios Engine.</div>
+                <div className="terminal-text">💬 What would you like to explore today?</div>
                 <div>$</div>
               </div>
             </motion.div>
@@ -395,14 +451,17 @@ function App() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
+              <motion.a
+                href="https://crates.io/crates/helios-engine"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-orange-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-50 transition-colors shadow-lg"
+                className="bg-white text-orange-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-50 transition-colors shadow-lg inline-block"
               >
                 <Terminal className="w-5 h-5 inline mr-2" />
                 Get Started Now
-              </motion.button>
+              </motion.a>
 
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -418,7 +477,7 @@ function App() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 dark:bg-black text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -428,15 +487,15 @@ function App() {
                 </div>
                 <span className="text-xl font-bold">Helios Engine</span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
+              <p className="text-gray-400 dark:text-gray-500 text-sm leading-relaxed">
                 Powerful Rust framework for building LLM-powered agents with advanced features and easy integration.
               </p>
             </div>
 
             <div>
               <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Installation</a></li>
+              <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-500">
+                <li><a href="#" className="hover:text-white dark:hover:text-gray-300 transition-colors">Installation</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Quick Start</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Examples</a></li>
@@ -445,7 +504,7 @@ function App() {
 
             <div>
               <h4 className="font-semibold mb-4">Community</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-500">
                 <li><a href="#" className="hover:text-white transition-colors">GitHub</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Issues</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Discussions</a></li>
@@ -455,7 +514,7 @@ function App() {
 
             <div>
               <h4 className="font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
+              <ul className="space-y-2 text-sm text-gray-400 dark:text-gray-500">
                 <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Changelog</a></li>
@@ -464,7 +523,7 @@ function App() {
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400">
+          <div className="border-t border-gray-800 dark:border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400 dark:text-gray-500">
             <p>&copy; 2024 Helios Engine. Made with ❤️ in Rust.</p>
           </div>
         </div>
