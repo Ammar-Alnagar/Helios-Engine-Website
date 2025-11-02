@@ -1,73 +1,123 @@
-# React + TypeScript + Vite
+# Helios Engine Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![Crates.io](https://img.shields.io/crates/v/helios-engine.svg)](https://crates.io/crates/helios-engine)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-Currently, two official plugins are available:
+The official website for **Helios Engine**, a powerful and flexible Rust framework for building LLM-powered agents with tool support, streaming chat capabilities, and easy configuration management.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔥 About Helios Engine
 
-## React Compiler
+Helios Engine is a comprehensive Rust framework that enables developers to:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Build Intelligent Agents**: Create conversational AI agents with memory and context awareness
+- **Multi-Agent Collaboration**: Implement "Forest of Agents" for complex task delegation and communication
+- **RAG Systems**: Integrate Retrieval-Augmented Generation with vector stores (InMemory and Qdrant)
+- **Real-time Streaming**: Experience true real-time response streaming for both remote and local models
+- **16+ Built-in Tools**: Access extensive tool suite including web scraping, file I/O, HTTP requests, and more
+- **Local Model Support**: Run models offline using llama.cpp with HuggingFace integration
+- **OpenAI-Compatible API**: Expose OpenAI-compatible API endpoints with full parameter support
 
-## Expanding the ESLint configuration
+## 🚀 Quick Start
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+# Install Helios Engine
+cargo install helios-engine
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Initialize configuration
+helios-engine init
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start chatting with your agent
+helios-engine chat
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🛠️ Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This website is built with modern web technologies:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **React 18** - Component-based UI framework
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Fast build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Animation library
+- **Lucide React** - Beautiful icons
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Ammar-Alnagar/Helios-Engine-Website.git
+   cd Helios-Engine-Website
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser** and visit `http://localhost:5173`
+
+### Build for Production
+
+```bash
+npm run build
 ```
+
+The built files will be in the `dist/` directory.
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # Reusable React components
+│   ├── DocsSection.tsx  # Documentation links section
+│   └── ExamplesSection.tsx # Code examples (removed from website)
+├── App.tsx             # Main application component
+├── main.tsx            # Application entry point
+└── index.css           # Global styles
+```
+
+## 🎨 Features
+
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Modern UI**: Clean, professional design with smooth animations
+- **Performance**: Fast loading with optimized assets
+- **Accessibility**: Semantic HTML and ARIA attributes
+- **SEO Friendly**: Proper meta tags and structured content
+
+## 📚 Documentation
+
+For detailed documentation about Helios Engine itself, visit:
+
+- [Official Documentation](https://docs.rs/helios-engine/0.3.6/helios_engine/)
+- [GitHub Repository](https://github.com/Ammar-Alnagar/Helios-Engine)
+- [Crates.io](https://crates.io/crates/helios-engine)
+
+## 🤝 Contributing
+
+Contributions to the website are welcome! Please feel free to submit issues and pull requests.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ using Rust
+- Icons by [Lucide](https://lucide.dev/)
+- Fonts and styling inspired by modern design trends
