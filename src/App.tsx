@@ -107,7 +107,7 @@ function App() {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
               <img
-                src="https://raw.githubusercontent.com/Ammar-Alnagar/Helios-Engine/master/Helios_Engine_Logo.png"
+                src="https://raw.githubusercontent.com/Ammar-Alnagar/Helios-Engine-Website/main/Logob.gif"
                 alt="Helios Engine Logo"
                 className="w-8 h-8 rounded-lg"
               />
@@ -220,7 +220,12 @@ function App() {
             </a>
 
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-              🔥 <span className="bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">Helios Engine</span>
+              <img
+                src="https://raw.githubusercontent.com/Ammar-Alnagar/Helios-Engine-Website/main/Logob.gif"
+                alt="Helios Engine Logo"
+                className="inline w-16 h-16 mr-4 rounded-lg"
+              />
+              <span className="bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">Helios Engine</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
@@ -482,7 +487,7 @@ function App() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <img
-                  src="https://raw.githubusercontent.com/Ammar-Alnagar/Helios-Engine/master/Helios_Engine_Logo.png"
+                  src="https://raw.githubusercontent.com/Ammar-Alnagar/Helios-Engine-Website/main/Logob.gif"
                   alt="Helios Engine Logo"
                   className="w-8 h-8 rounded-lg"
                 />
