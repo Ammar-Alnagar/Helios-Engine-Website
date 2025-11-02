@@ -11,6 +11,7 @@ const ExamplesSection = () => {
       description: "Simple conversational agent with memory",
       icon: <Terminal className="w-5 h-5" />,
       difficulty: "Beginner",
+      link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/examples/basic_agent.rs",
       code: `use helios_engine::{Agent, Config};
 
 #[tokio::main]
@@ -35,6 +36,7 @@ async fn main() -> helios_engine::Result<()> {
       description: "Enhanced agent with calculator and echo tools",
       icon: <Code className="w-5 h-5" />,
       difficulty: "Intermediate",
+      link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/examples/agent_with_tools.rs",
       code: `use helios_engine::{Agent, CalculatorTool, Config, EchoTool};
 
 #[tokio::main]
@@ -62,6 +64,7 @@ async fn main() -> helios_engine::Result<()> {
       description: "Multi-agent collaboration system",
       icon: <Users className="w-5 h-5" />,
       difficulty: "Advanced",
+      link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/examples/forest_of_agents.rs",
       code: `use helios_engine::{Agent, Config, ForestBuilder};
 
 #[tokio::main]
@@ -101,6 +104,7 @@ async fn main() -> helios_engine::Result<()> {
       description: "Retrieval-Augmented Generation with Qdrant",
       icon: <Database className="w-5 h-5" />,
       difficulty: "Advanced",
+      link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/examples/rag_with_vector_store.rs",
       code: `use helios_engine::{Agent, Config, RagTool, QdrantStore};
 
 #[tokio::main]
@@ -141,10 +145,10 @@ async fn main() -> helios_engine::Result<()> {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Beginner': return 'bg-green-100 text-green-800'
-      case 'Intermediate': return 'bg-yellow-100 text-yellow-800'
-      case 'Advanced': return 'bg-red-100 text-red-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'Beginner': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+      case 'Intermediate': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+      case 'Advanced': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
     }
   }
 
@@ -211,22 +215,29 @@ async fn main() -> helios_engine::Result<()> {
                   </div>
 
                   <div className="mt-6 flex gap-3">
-                    <motion.button
+                    <motion.a
+                      href={example.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="btn-primary flex-1"
+                      className="btn-primary flex-1 inline-block text-center"
+                      aria-label={`View ${example.title} example on GitHub`}
+                      title={`View ${example.title} example on GitHub`}
                     >
                       <Play className="w-4 h-4 inline mr-2" />
-                      Run Example
-                    </motion.button>
+                      View Example
+                    </motion.a>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => copyToClipboard(example.code, index)}
                       className="btn-secondary p-3"
+                      aria-label={copiedIndex === index ? "Code copied!" : "Copy code to clipboard"}
+                      title={copiedIndex === index ? "Code copied!" : "Copy code to clipboard"}
                     >
                       {copiedIndex === index ? (
-                        <Check className="w-4 h-4 text-green-600" />
+                        <Check className="w-4 h-4 text-green-600 dark:text-green-400" />
                       ) : (
                         <Copy className="w-4 h-4" />
                       )}
@@ -277,6 +288,8 @@ async fn main() -> helios_engine::Result<()> {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="btn-primary inline-block"
+              aria-label="View all examples on GitHub"
+              title="View all examples on GitHub"
             >
               <FileText className="w-5 h-5 inline mr-2" />
               View All Examples
@@ -286,6 +299,8 @@ async fn main() -> helios_engine::Result<()> {
               whileTap={{ scale: 0.95 }}
               onClick={() => navigator.clipboard.writeText('git clone https://github.com/Ammar-Alnagar/Helios-Engine.git')}
               className="btn-secondary"
+              aria-label="Copy git clone command to clipboard"
+              title="Copy git clone command to clipboard"
             >
               <Code className="w-5 h-5 inline mr-2" />
               Clone Repository

@@ -466,10 +466,11 @@ function App() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => navigator.clipboard.writeText('git clone https://github.com/Ammar-Alnagar/Helios-Engine.git')}
                 className="border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white hover:text-orange-600 transition-colors"
               >
                 <Github className="w-5 h-5 inline mr-2" />
-                View on GitHub
+                Clone Repository
               </motion.button>
             </div>
           </motion.div>
