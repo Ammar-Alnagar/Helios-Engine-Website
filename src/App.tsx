@@ -145,7 +145,9 @@ function App() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               <a
-                href="#features"
+                href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/FEATURES.md"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors"
               >
                 Features
@@ -203,7 +205,9 @@ function App() {
             >
               <div className="px-4 py-6 space-y-4">
                 <a
-                  href="#features"
+                  href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/FEATURES.md"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
