@@ -104,7 +104,7 @@ src/
 
 For detailed documentation about Helios Engine itself, visit:
 
-- [Official Documentation](https://docs.rs/helios-engine/0.3.6/helios_engine/)
+- [Official Documentation](https://docs.rs/helios-engine/0.3.7/helios_engine/)
 - [GitHub Repository](https://github.com/Ammar-Alnagar/Helios-Engine)
 - [Crates.io](https://crates.io/crates/helios-engine)
 
