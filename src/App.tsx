@@ -24,6 +24,18 @@ import DocsSection from "./components/DocsSection";
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [version, setVersion] = useState("...");
+
+  useEffect(() => {
+    fetch("https://img.shields.io/crates/v/helios-engine.svg")
+      .then((response) => response.text())
+      .then((svgText) => {
+        const match = svgText.match(/>(v[0-9]+\.[0-9]+\.[0-9]+)</);
+        if (match) {
+          setVersion(match[1]);
+        }
+      });
+  }, []);
 
   // Initialize dark mode from localStorage or system preference
   useEffect(() => {
@@ -252,7 +264,7 @@ function App() {
               className="inline-flex items-center px-4 py-2 rounded-full bg-orange-100 text-orange-800 text-sm font-medium mb-8 hover:bg-orange-200 transition-colors"
             >
               <Star className="w-4 h-4 mr-2" />
-              v0.3.7 - Latest Release
+              {version} - Latest Release
             </a>
 
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
@@ -273,14 +285,17 @@ function App() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <motion.button
+              <motion.a
+                href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/QUICKSTART.md"
+                target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="btn-primary text-lg px-8 py-4"
               >
                 <Terminal className="w-5 h-5 inline mr-2" />
                 Get Started
-              </motion.button>
+              </motion.a>
 
               <motion.a
                 href="https://docs.rs/helios-engine/0.3.7/helios_engine/"
@@ -527,7 +542,7 @@ function App() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
-                href="https://crates.io/crates/helios-engine"
+                href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/QUICKSTART.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
