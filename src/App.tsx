@@ -58,37 +58,43 @@ function App() {
       icon: <Users className="w-8 h-8" />,
       title: "Forest of Agents",
       description: "Multi-agent collaboration system where agents can communicate, delegate tasks, and share context for complex workflows.",
-      gradient: "from-blue-500 to-cyan-500"
+      gradient: "from-blue-500 to-cyan-500",
+      link: "https://docs.rs/helios-engine/0.3.6/helios_engine/forest/index.html"
     },
     {
       icon: <Database className="w-8 h-8" />,
       title: "RAG System",
       description: "Retrieval-Augmented Generation with vector stores (InMemory and Qdrant) for enhanced knowledge and context.",
-      gradient: "from-purple-500 to-pink-500"
+      gradient: "from-purple-500 to-pink-500",
+      link: "https://docs.rs/helios-engine/0.3.6/helios_engine/rag/index.html"
     },
     {
       icon: <Zap className="w-8 h-8" />,
       title: "Real-time Streaming",
       description: "True real-time response streaming for both remote and local models with immediate token delivery.",
-      gradient: "from-orange-500 to-red-500"
+      gradient: "from-orange-500 to-red-500",
+      link: "https://docs.rs/helios-engine/0.3.6/helios_engine/llm/struct.StreamChunk.html"
     },
     {
       icon: <Terminal className="w-8 h-8" />,
       title: "16+ Built-in Tools",
       description: "Extensive tool suite including web scraping, JSON parsing, file I/O, shell commands, HTTP requests, and text processing.",
-      gradient: "from-green-500 to-teal-500"
+      gradient: "from-green-500 to-teal-500",
+      link: "https://docs.rs/helios-engine/0.3.6/helios_engine/tools/index.html"
     },
     {
       icon: <Cpu className="w-8 h-8" />,
       title: "Local Model Support",
       description: "Run models offline using llama.cpp with HuggingFace integration. Full offline capability with optional local feature.",
-      gradient: "from-indigo-500 to-purple-500"
+      gradient: "from-indigo-500 to-purple-500",
+      link: "https://docs.rs/helios-engine/0.3.6/helios_engine/config/struct.LLMConfig.html"
     },
     {
       icon: <Globe className="w-8 h-8" />,
       title: "OpenAI-Compatible API",
       description: "Expose OpenAI-compatible API endpoints with full parameter support. Use as both CLI tool and Rust library crate.",
-      gradient: "from-pink-500 to-rose-500"
+      gradient: "from-pink-500 to-rose-500",
+      link: "https://docs.rs/helios-engine/0.3.6/helios_engine/config/struct.Config.html"
     }
   ]
 
@@ -331,10 +337,12 @@ function App() {
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
                   {feature.description}
                 </p>
-                <div className="mt-4 flex items-center text-orange-600 font-medium">
-                  Learn more
-                  <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                </div>
+                <a href={feature.link} target="_blank" rel="noopener noreferrer">
+                  <div className="mt-4 flex items-center text-orange-600 font-medium">
+                    Learn more
+                    <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </a>
               </motion.div>
             ))}
           </div>
