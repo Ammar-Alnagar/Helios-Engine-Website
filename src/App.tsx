@@ -732,7 +732,7 @@ function App() {
           </div>
 
           <div className="border-t border-gray-800 dark:border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400 dark:text-gray-500">
-            <p>&copy; 2024 Helios Engine. Made with ❤️ in Rust.</p>
+            <p>&copy; 2025 Helios Engine. Made with ❤️ in Rust.</p>
           </div>
         </div>
       </footer>
