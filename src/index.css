@@ -297,4 +297,16 @@
   .dark .section-edge-fade-white::after {
     background: linear-gradient(to left, rgb(17 24 39) 0%, transparent 100%);
   }
+
+  @keyframes flameAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .flame-background {
+    background: linear-gradient(-45deg, #ff7e5f, #feb47b, #ff7e5f, #ffc107);
+    background-size: 400% 400%;
+    animation: flameAnimation 15s ease infinite;
+  }
 }

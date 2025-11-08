@@ -18,6 +18,7 @@ import {
   Zap,
   Moon,
   Sun,
+  Flame,
 } from "lucide-react";
 import DocsSection from "./components/DocsSection";
 import InteractiveExamples from "./components/InteractiveExamples";
@@ -143,7 +144,7 @@ function App() {
       <ParallaxBackground />
       
       {/* Navigation */}
-      <nav className="fixed top-0 w-full nav-bg border-b z-50">
+      <nav className="fixed top-0 w-full nav-bg border-b z-50 flame-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
@@ -163,17 +164,28 @@ function App() {
                 href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/FEATURES.md"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors"
+                className="flex items-center text-black dark:text-black hover:text-orange-600 transition-colors"
               >
+                <Flame className="w-4 h-4 mr-2 text-orange-500" />
                 Features
               </a>
               <a
                 href="https://docs.rs/helios-engine/0.3.7/helios_engine/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors"
+                className="flex items-center text-black dark:text-black hover:text-orange-600 transition-colors"
               >
+                <Flame className="w-4 h-4 mr-2 text-orange-500" />
                 Docs
+              </a>
+              <a
+                href="https://ammar-alnagar.github.io/Helios-Engine/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-black dark:text-black hover:text-orange-600 transition-colors"
+              >
+                <Flame className="w-4 h-4 mr-2 text-orange-500" />
+                Book
               </a>
               <button
                 onClick={toggleDarkMode}
@@ -223,19 +235,31 @@ function App() {
                   href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/FEATURES.md"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors py-2"
+                  className="flex items-center block text-black dark:text-black hover:text-orange-600 transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <Flame className="w-4 h-4 mr-2 text-orange-500" />
                   Features
                 </a>
                 <a
                   href="https://docs.rs/helios-engine/0.3.7/helios_engine/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 transition-colors py-2"
+                  className="flex items-center block text-black dark:text-black hover:text-orange-600 transition-colors py-2"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
+                  <Flame className="w-4 h-4 mr-2 text-orange-500" />
                   Docs
+                </a>
+                <a
+                  href="https://ammar-alnagar.github.io/Helios-Engine/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center block text-black dark:text-black hover:text-orange-600 transition-colors py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Flame className="w-4 h-4 mr-2 text-orange-500" />
+                  Book
                 </a>
                 <button
                   onClick={() => {
