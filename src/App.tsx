@@ -21,6 +21,7 @@ import {
   Flame,
 } from "lucide-react";
 import DocsSection from "./components/DocsSection";
+import GPUChipBackground from "./components/GPUChipBackground";
 import InteractiveExamples from "./components/InteractiveExamples";
 import LoadingScreen from "./components/LoadingScreen";
 import ParallaxBackground from "./components/ParallaxBackground";
@@ -140,8 +141,9 @@ function App() {
       {/* Main Content */}
       {!isLoading && (
         <div className="min-h-screen relative transition-colors duration-300">
-      {/* Parallax Background */}
-      <ParallaxBackground />
+          <GPUChipBackground />
+          {/* Parallax Background */}
+          <ParallaxBackground />
       
       {/* Navigation */}
       <nav className="fixed top-0 w-full nav-bg border-b z-50 flame-background">

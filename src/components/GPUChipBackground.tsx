@@ -1,291 +1,310 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { EffectComposer, RenderPass, UnrealBloomPass } from 'three-stdlib';
 
 const GPUChipBackground = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const sceneRef = useRef<THREE.Scene | null>(null);
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
-  const chipGroupRef = useRef<THREE.Group | null>(null);
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const scrollRef = useRef(0);
+  const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!mountRef.current) return;
 
     // Scene setup
     const scene = new THREE.Scene();
-    sceneRef.current = scene;
+    scene.fog = new THREE.Fog(0x000000, 10, 50);
 
-    // Camera setup
+    // Camera
     const camera = new THREE.PerspectiveCamera(
-      75,
+      50,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-    camera.position.z = 5;
-    cameraRef.current = camera;
+    camera.position.set(0, 2, 8);
+    camera.lookAt(0, 0, 0);
 
-    // Renderer setup
+    // Mouse and scroll tracking
+    const mouse = { x: 0, y: 0 };
+    const targetRotation = { x: 0, y: 0 };
+    let scrollY = 0;
+
+    const onMouseMove = (event: MouseEvent) => {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    const onScroll = () => {
+      scrollY = window.scrollY;
+    };
+
+    window.addEventListener('mousemove', onMouseMove, false);
+    window.addEventListener('scroll', onScroll, false);
+
+    // Renderer with GPU acceleration
     const renderer = new THREE.WebGLRenderer({
-      canvas: canvasRef.current,
-      alpha: true,
       antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance',
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    rendererRef.current = renderer;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    mountRef.current.appendChild(renderer.domElement);
 
-    // Create GPU chip group
+    // Create GPU Chip geometry
     const chipGroup = new THREE.Group();
-    chipGroupRef.current = chipGroup;
-    scene.add(chipGroup);
 
-    // Create main chip body (rectangular base)
-    const chipGeometry = new THREE.BoxGeometry(2.5, 2.5, 0.3);
-    const chipMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x1a1a2e,
+    // Main chip body
+    const chipGeometry = new THREE.BoxGeometry(3, 0.3, 3);
+    const chipMaterial = new THREE.MeshStandardMaterial({
+      color: 0x1a1a1a,
       metalness: 0.9,
-      roughness: 0.1,
-      clearcoat: 1,
-      clearcoatRoughness: 0.1,
-      envMapIntensity: 1,
+      roughness: 0.3,
+      emissive: 0x0a0a0a,
     });
     const chip = new THREE.Mesh(chipGeometry, chipMaterial);
     chipGroup.add(chip);
 
-    // Create circuit pattern grid
-    const createCircuitPattern = () => {
-      const circuitGroup = new THREE.Group();
-      const lineCount = 20;
-      const spacing = 0.25;
-      const offset = (lineCount * spacing) / 2;
+    // Create circuit lines
+    const createCircuitLines = () => {
+      const lines = new THREE.Group();
+      const lineMaterial = new THREE.MeshBasicMaterial({
+        color: 0x00f6ff,
+        transparent: true,
+        opacity: 0.8,
+      });
 
-      for (let i = 0; i < lineCount; i++) {
-        // Horizontal lines
-        const hLineGeometry = new THREE.PlaneGeometry(2.3, 0.02);
-        const hLineMaterial = new THREE.MeshBasicMaterial({
-          color: 0x00f6ff,
-          transparent: true,
-          opacity: 0.6,
-        });
-        const hLine = new THREE.Mesh(hLineGeometry, hLineMaterial);
-        hLine.position.y = i * spacing - offset;
-        hLine.position.z = 0.16;
-        circuitGroup.add(hLine);
-
-        // Vertical lines
-        const vLineGeometry = new THREE.PlaneGeometry(0.02, 2.3);
-        const vLineMaterial = new THREE.MeshBasicMaterial({
-          color: 0xff6b35,
-          transparent: true,
-          opacity: 0.5,
-        });
-        const vLine = new THREE.Mesh(vLineGeometry, vLineMaterial);
-        vLine.position.x = i * spacing - offset;
-        vLine.position.z = 0.16;
-        circuitGroup.add(vLine);
+      // Horizontal lines
+      for (let i = 0; i < 8; i++) {
+        const lineGeometry = new THREE.BoxGeometry(2.5, 0.02, 0.02);
+        const line = new THREE.Mesh(lineGeometry, lineMaterial);
+        line.position.set(0, 0.16, -1.2 + i * 0.35);
+        lines.add(line);
       }
 
-      return circuitGroup;
+      // Vertical lines
+      for (let i = 0; i < 8; i++) {
+        const lineGeometry = new THREE.BoxGeometry(0.02, 0.02, 2.5);
+        const line = new THREE.Mesh(lineGeometry, lineMaterial);
+        line.position.set(-1.2 + i * 0.35, 0.16, 0);
+        lines.add(line);
+      }
+
+      return lines;
     };
 
-    const circuitPattern = createCircuitPattern();
-    chipGroup.add(circuitPattern);
+    const circuitLines = createCircuitLines();
+    chipGroup.add(circuitLines);
 
-    // Create corner pins/contacts
-    const createCornerPins = () => {
-      const pinGroup = new THREE.Group();
-      const pinGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.2, 16);
-      const pinMaterial = new THREE.MeshPhysicalMaterial({
-        color: 0xffd700,
+    // Create glowing connection points
+    const createConnectionPoints = () => {
+      const points = new THREE.Group();
+      const pointGeometry = new THREE.SphereGeometry(0.04, 8, 8);
+      const pointMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff6b00,
+        transparent: true,
+      });
+
+      for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 6; j++) {
+          const point = new THREE.Mesh(pointGeometry, pointMaterial.clone());
+          point.position.set(-1 + i * 0.4, 0.16, -1 + j * 0.4);
+          
+          // Random pulsing animation offset
+          (point.userData as { pulseOffset: number }).pulseOffset = Math.random() * Math.PI * 2;
+          points.add(point);
+        }
+      }
+
+      return points;
+    };
+
+    const connectionPoints = createConnectionPoints();
+    chipGroup.add(connectionPoints);
+
+    // Create corner pins
+    const createPins = () => {
+      const pins = new THREE.Group();
+      const pinGeometry = new THREE.CylinderGeometry(0.08, 0.08, 0.4, 8);
+      const pinMaterial = new THREE.MeshStandardMaterial({
+        color: 0xc0c0c0,
         metalness: 1,
         roughness: 0.2,
       });
 
       const positions = [
-        [-1.1, -1.1, 0],
-        [1.1, -1.1, 0],
-        [-1.1, 1.1, 0],
-        [1.1, 1.1, 0],
+        [-1.3, -0.2, -1.3],
+        [1.3, -0.2, -1.3],
+        [-1.3, -0.2, 1.3],
+        [1.3, -0.2, 1.3],
       ];
 
-      positions.forEach(([x, y, z]) => {
+      positions.forEach((pos) => {
         const pin = new THREE.Mesh(pinGeometry, pinMaterial);
-        pin.position.set(x, y, z);
-        pin.rotation.x = Math.PI / 2;
-        pinGroup.add(pin);
+        pin.position.set(pos[0], pos[1], pos[2]);
+        pins.add(pin);
       });
 
-      return pinGroup;
+      return pins;
     };
 
-    const cornerPins = createCornerPins();
-    chipGroup.add(cornerPins);
+    const pins = createPins();
+    chipGroup.add(pins);
 
-    // Create central processing core
-    const coreGeometry = new THREE.BoxGeometry(1, 1, 0.2);
-    const coreMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0x4a4e69,
+    // Add heat sink on top
+    const heatSinkGeometry = new THREE.BoxGeometry(2, 0.6, 2);
+    const heatSinkMaterial = new THREE.MeshStandardMaterial({
+      color: 0x404040,
       metalness: 0.8,
-      roughness: 0.3,
-      emissive: 0x00f6ff,
-      emissiveIntensity: 0.3,
+      roughness: 0.4,
     });
-    const core = new THREE.Mesh(coreGeometry, coreMaterial);
-    core.position.z = 0.2;
-    chipGroup.add(core);
+    const heatSink = new THREE.Mesh(heatSinkGeometry, heatSinkMaterial);
+    heatSink.position.y = 0.45;
+    chipGroup.add(heatSink);
 
-    // Add glowing particles around the chip
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particleCount = 100;
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount; i++) {
-      const angle = (i / particleCount) * Math.PI * 2;
-      const radius = 2 + Math.random() * 1.5;
-      positions[i * 3] = Math.cos(angle) * radius;
-      positions[i * 3 + 1] = Math.sin(angle) * radius;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 2;
-
-      // Color variation (cyan to orange)
-      const t = i / particleCount;
-      colors[i * 3] = t; // R
-      colors[i * 3 + 1] = 0.6 + t * 0.4; // G
-      colors[i * 3 + 2] = 1 - t * 0.5; // B
+    // Add heat sink fins
+    for (let i = 0; i < 8; i++) {
+      const finGeometry = new THREE.BoxGeometry(1.8, 0.5, 0.05);
+      const fin = new THREE.Mesh(finGeometry, heatSinkMaterial);
+      fin.position.set(0, 0.45, -0.7 + i * 0.2);
+      chipGroup.add(fin);
     }
 
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.05,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.7,
-      blending: THREE.AdditiveBlending,
-    });
-
-    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-    chipGroup.add(particles);
+    scene.add(chipGroup);
 
     // Lighting setup
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
     scene.add(ambientLight);
 
-    const pointLight1 = new THREE.PointLight(0x00f6ff, 2, 10);
-    pointLight1.position.set(2, 2, 3);
-    scene.add(pointLight1);
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1);
+    mainLight.position.set(5, 5, 5);
+    scene.add(mainLight);
 
-    const pointLight2 = new THREE.PointLight(0xff6b35, 1.5, 10);
-    pointLight2.position.set(-2, -2, 3);
-    scene.add(pointLight2);
+    const backLight = new THREE.DirectionalLight(0x0088ff, 0.5);
+    backLight.position.set(-5, 2, -5);
+    scene.add(backLight);
 
-    const spotLight = new THREE.SpotLight(0xffffff, 1);
-    spotLight.position.set(0, 0, 5);
-    spotLight.angle = Math.PI / 6;
-    spotLight.penumbra = 0.5;
-    scene.add(spotLight);
+    // Add rim light for dramatic effect
+    const rimLight = new THREE.DirectionalLight(0xff6b00, 0.8);
+    rimLight.position.set(0, 3, -5);
+    scene.add(rimLight);
 
-    // Mouse move handler
-    const handleMouseMove = (event: MouseEvent) => {
-      mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    // Add point lights for glow
+    const glowLight1 = new THREE.PointLight(0x00f6ff, 1, 10);
+    glowLight1.position.set(2, 1, 2);
+    scene.add(glowLight1);
+
+    const glowLight2 = new THREE.PointLight(0xff6b00, 1, 10);
+    glowLight2.position.set(-2, 1, -2);
+    scene.add(glowLight2);
+
+    // Post-processing with bloom
+    const composer = new EffectComposer(renderer);
+    const renderPass = new RenderPass(scene, camera);
+    composer.addPass(renderPass);
+
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      1.8, // strength
+      0.6, // radius
+      0.3  // threshold
+    );
+    composer.addPass(bloomPass);
+
+    // Animation loop
+    let time = 0;
+    const animate = () => {
+      requestAnimationFrame(animate);
+      time += 0.01;
+
+      // Smooth rotation based on mouse
+      targetRotation.x = mouse.y * 0.3;
+      targetRotation.y = mouse.x * 0.3;
+
+      chipGroup.rotation.x += (targetRotation.x - chipGroup.rotation.x) * 0.05;
+      chipGroup.rotation.y += (targetRotation.y - chipGroup.rotation.y) * 0.05;
+
+      // Constant slow rotation
+      chipGroup.rotation.y += 0.002;
+
+      // Subtle floating animation
+      chipGroup.position.y = Math.sin(time * 0.5) * 0.1;
+
+      // React to scroll
+      const scrollOffset = scrollY * 0.001;
+      chipGroup.rotation.x = scrollOffset * 0.5 + targetRotation.x;
+
+      // Animate connection points (pulsing glow)
+      connectionPoints.children.forEach((point) => {
+        const mesh = point as THREE.Mesh;
+        const material = mesh.material as THREE.MeshBasicMaterial;
+        const userData = mesh.userData as { pulseOffset: number };
+        const pulse = Math.sin(time * 2 + userData.pulseOffset) * 0.5 + 0.5;
+        material.opacity = 0.6 + pulse * 0.4;
+      });
+
+      // Animate circuit lines opacity
+      circuitLines.children.forEach((line, index) => {
+        const mesh = line as THREE.Mesh;
+        const material = mesh.material as THREE.MeshBasicMaterial;
+        const wave = Math.sin(time * 1.5 + index * 0.3) * 0.3 + 0.7;
+        material.opacity = wave;
+      });
+
+      // Animate glow lights
+      glowLight1.intensity = Math.sin(time * 1.5) * 0.3 + 1;
+      glowLight2.intensity = Math.cos(time * 1.5) * 0.3 + 1;
+
+      composer.render();
     };
+    animate();
 
-    // Scroll handler
-    const handleScroll = () => {
-      scrollRef.current = window.scrollY / window.innerHeight;
-    };
-
-    // Window resize handler
+    // Handle resize
     const handleResize = () => {
-      if (!camera || !renderer) return;
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
+      composer.setSize(window.innerWidth, window.innerHeight);
     };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', handleResize);
-
-    // Animation loop
-    let animationFrameId: number;
-    const clock = new THREE.Clock();
-
-    const animate = () => {
-      animationFrameId = requestAnimationFrame(animate);
-      const elapsedTime = clock.getElapsedTime();
-
-      if (chipGroup) {
-        // Base rotation
-        chipGroup.rotation.y = elapsedTime * 0.15;
-        chipGroup.rotation.x = Math.sin(elapsedTime * 0.3) * 0.1;
-
-        // React to mouse position
-        chipGroup.rotation.y += mouseRef.current.x * 0.1;
-        chipGroup.rotation.x += mouseRef.current.y * 0.1;
-
-        // React to scroll
-        chipGroup.position.y = scrollRef.current * 0.5;
-        chipGroup.rotation.z = scrollRef.current * 0.2;
-
-        // Animate particles
-        const particlePositions = particles.geometry.attributes.position.array as Float32Array;
-        for (let i = 0; i < particleCount; i++) {
-          const angle = elapsedTime * 0.5 + (i / particleCount) * Math.PI * 2;
-          const radius = 2 + Math.sin(elapsedTime + i * 0.1) * 0.5;
-          particlePositions[i * 3] = Math.cos(angle) * radius;
-          particlePositions[i * 3 + 1] = Math.sin(angle) * radius;
-          particlePositions[i * 3 + 2] = Math.sin(elapsedTime * 2 + i * 0.1) * 0.5;
-        }
-        particles.geometry.attributes.position.needsUpdate = true;
-
-        // Pulse the core emissive intensity
-        coreMaterial.emissiveIntensity = 0.3 + Math.sin(elapsedTime * 2) * 0.2;
-
-        // Animate lights
-        pointLight1.position.x = Math.sin(elapsedTime * 0.5) * 3;
-        pointLight1.position.y = Math.cos(elapsedTime * 0.5) * 3;
-        pointLight2.position.x = Math.cos(elapsedTime * 0.7) * 3;
-        pointLight2.position.y = Math.sin(elapsedTime * 0.7) * 3;
-      }
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
 
     // Cleanup
     return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('scroll', onScroll);
       
-      // Dispose of Three.js resources
+      // Dispose of geometries and materials
       scene.traverse((object) => {
         if (object instanceof THREE.Mesh) {
           object.geometry.dispose();
           if (Array.isArray(object.material)) {
-            object.material.forEach(material => material.dispose());
+            object.material.forEach((material) => material.dispose());
           } else {
             object.material.dispose();
           }
         }
       });
+      
       renderer.dispose();
+      if (mountRef.current && renderer.domElement.parentNode === mountRef.current) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
     };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 0 }}
+    <div
+      ref={mountRef}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: -1,
+        pointerEvents: 'none',
+      }}
     />
   );
 };
