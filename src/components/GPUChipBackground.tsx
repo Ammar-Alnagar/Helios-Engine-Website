@@ -22,22 +22,15 @@ const GPUChipBackground = () => {
     camera.position.set(0, 2, 8);
     camera.lookAt(0, 0, 0);
 
-    // Mouse and scroll tracking
+    // Mouse tracking
     const mouse = { x: 0, y: 0 };
-    const targetRotation = { x: 0, y: 0 };
-    let scrollY = 0;
 
     const onMouseMove = (event: MouseEvent) => {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     };
 
-    const onScroll = () => {
-      scrollY = window.scrollY;
-    };
-
     window.addEventListener("mousemove", onMouseMove, false);
-    window.addEventListener("scroll", onScroll, false);
 
     // Renderer with GPU acceleration
     const renderer = new THREE.WebGLRenderer({
@@ -759,7 +752,6 @@ const GPUChipBackground = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("scroll", onScroll);
 
       scene.traverse((object) => {
         if (object instanceof THREE.Mesh) {
