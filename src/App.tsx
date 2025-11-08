@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import {
   Users,
@@ -21,11 +21,13 @@ import {
 } from "lucide-react";
 import DocsSection from "./components/DocsSection";
 import InteractiveExamples from "./components/InteractiveExamples";
+import LoadingScreen from "./components/LoadingScreen";
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [version, setVersion] = useState("...");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch("https://img.shields.io/crates/v/helios-engine.svg")
@@ -127,7 +129,17 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+    <>
+      {/* Loading Screen */}
+      <AnimatePresence>
+        {isLoading && (
+          <LoadingScreen onComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* Main Content */}
+      {!isLoading && (
+        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       {/* Navigation */}
       <nav className="fixed top-0 w-full nav-bg border-b z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -740,7 +752,9 @@ function App() {
           </div>
         </div>
       </footer>
-    </div>
+        </div>
+      )}
+    </>
   );
 }
 
