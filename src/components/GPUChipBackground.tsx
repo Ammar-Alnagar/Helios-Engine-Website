@@ -517,20 +517,6 @@ const GPUChipBackground = () => {
       logo.position.set(0, 0.8, 0);
       logoGroup.add(logo);
 
-      // Add bright orange glow planes behind it - REDUCED OPACITY
-      const glowGeometry1 = new THREE.CircleGeometry(0.6, 32);
-      const glowMaterial1 = new THREE.MeshBasicMaterial({
-        color: 0xff6b00,
-        transparent: true,
-        opacity: 0.3,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending,
-      });
-      const glow1 = new THREE.Mesh(glowGeometry1, glowMaterial1);
-      glow1.position.set(0, 0.79, 0); // MOVED UP to be on heat sink
-      glow1.rotation.x = Math.PI / 2;
-      logoGroup.add(glow1);
-
       return logoGroup;
     };
 
