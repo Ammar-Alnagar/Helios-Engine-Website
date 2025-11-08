@@ -53,6 +53,9 @@ const GPUChipBackground = () => {
 
     // Create GPU Chip geometry
     const chipGroup = new THREE.Group();
+    
+    // Rotate the entire chip group to face the user (90 degrees on X-axis)
+    chipGroup.rotation.x = Math.PI / 2;
 
     // Main chip body
     const chipGeometry = new THREE.BoxGeometry(3, 0.3, 3);
@@ -151,6 +154,290 @@ const GPUChipBackground = () => {
     const pins = createPins();
     chipGroup.add(pins);
 
+    // Create glowing wires extending from the chip
+    const createGlowingWires = () => {
+      const wires = new THREE.Group();
+      const orangeColor = 0xff6b00; // Bright orange color for all wires
+      
+      // Create wire using TubeGeometry for smooth curves
+      const createWire = (controlPoints: THREE.Vector3[], thickness = 0.02) => {
+        const curve = new THREE.CatmullRomCurve3(controlPoints);
+        const tubeGeometry = new THREE.TubeGeometry(curve, 64, thickness, 8, false);
+        const wireMaterial = new THREE.MeshBasicMaterial({
+          color: orangeColor,
+          transparent: true,
+          opacity: 0.9,
+        });
+        const wire = new THREE.Mesh(tubeGeometry, wireMaterial);
+        
+        // Store for animation
+        (wire.userData as { baseColor: number; pulseOffset: number }) = {
+          baseColor: orangeColor,
+          pulseOffset: Math.random() * Math.PI * 2,
+        };
+        
+        return wire;
+      };
+
+      // Corner wires - thicker and more prominent
+      const cornerWires = [
+        // Top-left corner - multiple wires
+        [
+          new THREE.Vector3(-1.5, 0.2, -1.5),
+          new THREE.Vector3(-2.5, 0.8, -2),
+          new THREE.Vector3(-3.5, 0.5, -3),
+          new THREE.Vector3(-4.5, 1.2, -3.5),
+        ],
+        [
+          new THREE.Vector3(-1.5, 0.2, -1.5),
+          new THREE.Vector3(-2.2, 0.3, -2.2),
+          new THREE.Vector3(-3.2, 0.9, -3.2),
+          new THREE.Vector3(-4.2, 0.4, -4.2),
+        ],
+        // Top-right corner
+        [
+          new THREE.Vector3(1.5, 0.2, -1.5),
+          new THREE.Vector3(2.5, 1.0, -2),
+          new THREE.Vector3(3.5, 0.4, -3),
+          new THREE.Vector3(4.5, 1.3, -4),
+        ],
+        [
+          new THREE.Vector3(1.5, 0.2, -1.5),
+          new THREE.Vector3(2.2, 0.5, -2.2),
+          new THREE.Vector3(3.2, 0.2, -3.2),
+          new THREE.Vector3(4.2, 0.8, -4.2),
+        ],
+        // Bottom-left corner
+        [
+          new THREE.Vector3(-1.5, 0.2, 1.5),
+          new THREE.Vector3(-2.5, -0.5, 2.5),
+          new THREE.Vector3(-3.5, 0.6, 3.5),
+          new THREE.Vector3(-4.5, 0, 4.5),
+        ],
+        [
+          new THREE.Vector3(-1.5, 0.2, 1.5),
+          new THREE.Vector3(-2.2, 0.7, 2.2),
+          new THREE.Vector3(-3.2, -0.2, 3.2),
+          new THREE.Vector3(-4.2, 0.9, 4.2),
+        ],
+        // Bottom-right corner
+        [
+          new THREE.Vector3(1.5, 0.2, 1.5),
+          new THREE.Vector3(2.5, 0.8, 2.5),
+          new THREE.Vector3(3.5, 0.1, 3.5),
+          new THREE.Vector3(4.5, 0.9, 4.5),
+        ],
+        [
+          new THREE.Vector3(1.5, 0.2, 1.5),
+          new THREE.Vector3(2.2, 0.3, 2.2),
+          new THREE.Vector3(3.2, 0.7, 3.2),
+          new THREE.Vector3(4.2, 0.2, 4.2),
+        ],
+      ];
+
+      cornerWires.forEach(points => wires.add(createWire(points, 0.025)));
+
+      // Edge wires - from sides and center
+      const edgeWires = [
+        // Top edge - multiple wires
+        [
+          new THREE.Vector3(0, 0.2, -1.5),
+          new THREE.Vector3(0.5, 1.0, -2.5),
+          new THREE.Vector3(-0.5, 0.6, -3.5),
+          new THREE.Vector3(0, 1.4, -4.5),
+        ],
+        [
+          new THREE.Vector3(-0.5, 0.2, -1.5),
+          new THREE.Vector3(-1.0, 0.8, -2.5),
+          new THREE.Vector3(-1.5, 0.4, -3.5),
+          new THREE.Vector3(-1.0, 1.1, -4.5),
+        ],
+        [
+          new THREE.Vector3(0.5, 0.2, -1.5),
+          new THREE.Vector3(1.0, 0.7, -2.5),
+          new THREE.Vector3(1.5, 0.5, -3.5),
+          new THREE.Vector3(1.0, 1.2, -4.5),
+        ],
+        // Bottom edge
+        [
+          new THREE.Vector3(0, 0.2, 1.5),
+          new THREE.Vector3(-0.5, -0.6, 2.5),
+          new THREE.Vector3(0.5, 0.3, 3.5),
+          new THREE.Vector3(0, -1.0, 4.5),
+        ],
+        [
+          new THREE.Vector3(-0.5, 0.2, 1.5),
+          new THREE.Vector3(-1.0, 0.4, 2.5),
+          new THREE.Vector3(-1.5, -0.3, 3.5),
+          new THREE.Vector3(-1.0, 0.7, 4.5),
+        ],
+        [
+          new THREE.Vector3(0.5, 0.2, 1.5),
+          new THREE.Vector3(1.0, 0.5, 2.5),
+          new THREE.Vector3(1.5, -0.2, 3.5),
+          new THREE.Vector3(1.0, 0.8, 4.5),
+        ],
+        // Left edge
+        [
+          new THREE.Vector3(-1.5, 0.2, 0),
+          new THREE.Vector3(-2.5, 1.0, 0.5),
+          new THREE.Vector3(-3.5, 0.5, -0.5),
+          new THREE.Vector3(-4.5, 1.3, 0),
+        ],
+        [
+          new THREE.Vector3(-1.5, 0.2, -0.5),
+          new THREE.Vector3(-2.5, 0.6, -0.8),
+          new THREE.Vector3(-3.5, 0.9, -0.3),
+          new THREE.Vector3(-4.5, 0.4, -0.7),
+        ],
+        [
+          new THREE.Vector3(-1.5, 0.2, 0.5),
+          new THREE.Vector3(-2.5, 0.4, 1.0),
+          new THREE.Vector3(-3.5, 0.8, 0.8),
+          new THREE.Vector3(-4.5, 0.6, 1.2),
+        ],
+        // Right edge
+        [
+          new THREE.Vector3(1.5, 0.2, 0),
+          new THREE.Vector3(2.5, 0.3, -0.5),
+          new THREE.Vector3(3.5, 0.9, 0.5),
+          new THREE.Vector3(4.5, 0.5, 0),
+        ],
+        [
+          new THREE.Vector3(1.5, 0.2, -0.5),
+          new THREE.Vector3(2.5, 0.7, -1.0),
+          new THREE.Vector3(3.5, 0.4, -0.8),
+          new THREE.Vector3(4.5, 0.9, -0.5),
+        ],
+        [
+          new THREE.Vector3(1.5, 0.2, 0.5),
+          new THREE.Vector3(2.5, 0.5, 1.0),
+          new THREE.Vector3(3.5, 0.2, 0.8),
+          new THREE.Vector3(4.5, 0.7, 1.2),
+        ],
+      ];
+
+      edgeWires.forEach(points => wires.add(createWire(points, 0.018)));
+
+      // Additional scattered wires for density
+      const scatteredWires = [
+        [
+          new THREE.Vector3(-1.0, 0.2, -1.2),
+          new THREE.Vector3(-1.8, 0.9, -2.0),
+          new THREE.Vector3(-2.5, 0.5, -2.8),
+          new THREE.Vector3(-3.2, 1.1, -3.5),
+        ],
+        [
+          new THREE.Vector3(1.0, 0.2, -1.2),
+          new THREE.Vector3(1.8, 0.6, -2.0),
+          new THREE.Vector3(2.5, 0.9, -2.8),
+          new THREE.Vector3(3.2, 0.4, -3.5),
+        ],
+        [
+          new THREE.Vector3(-1.0, 0.2, 1.2),
+          new THREE.Vector3(-1.8, 0.4, 2.0),
+          new THREE.Vector3(-2.5, 0.8, 2.8),
+          new THREE.Vector3(-3.2, 0.3, 3.5),
+        ],
+        [
+          new THREE.Vector3(1.0, 0.2, 1.2),
+          new THREE.Vector3(1.8, 0.7, 2.0),
+          new THREE.Vector3(2.5, 0.3, 2.8),
+          new THREE.Vector3(3.2, 0.8, 3.5),
+        ],
+      ];
+
+      scatteredWires.forEach(points => wires.add(createWire(points, 0.015)));
+
+      return wires;
+    };
+
+    const glowingWires = createGlowingWires();
+    chipGroup.add(glowingWires);
+
+    // Create Rust logo on the chip
+    const createRustLogo = () => {
+      const logoGroup = new THREE.Group();
+      
+      // Rust logo is a gear shape - simplified version
+      const createGearShape = () => {
+        const shape = new THREE.Shape();
+        const outerRadius = 0.5;
+        const innerRadius = 0.35;
+        const teeth = 8;
+        
+        for (let i = 0; i < teeth * 2; i++) {
+          const angle = (i / (teeth * 2)) * Math.PI * 2;
+          const radius = i % 2 === 0 ? outerRadius : innerRadius;
+          const x = Math.cos(angle) * radius;
+          const y = Math.sin(angle) * radius;
+          
+          if (i === 0) {
+            shape.moveTo(x, y);
+          } else {
+            shape.lineTo(x, y);
+          }
+        }
+        shape.closePath();
+        
+        // Add center hole
+        const holePath = new THREE.Path();
+        const holeRadius = 0.15;
+        holePath.absarc(0, 0, holeRadius, 0, Math.PI * 2, false);
+        shape.holes.push(holePath);
+        
+        return shape;
+      };
+      
+      const gearShape = createGearShape();
+      const extrudeSettings = {
+        depth: 0.02,
+        bevelEnabled: false,
+      };
+      
+      const logoGeometry = new THREE.ExtrudeGeometry(gearShape, extrudeSettings);
+      const logoMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff6b00,
+        transparent: true,
+        opacity: 0.95,
+      });
+      
+      // Front logo
+      const frontLogo = new THREE.Mesh(logoGeometry, logoMaterial);
+      frontLogo.position.set(0, 0, 0.17);
+      frontLogo.rotation.x = Math.PI / 2;
+      logoGroup.add(frontLogo);
+      
+      // Back logo
+      const backLogo = new THREE.Mesh(logoGeometry, logoMaterial.clone());
+      backLogo.position.set(0, 0, -0.17);
+      backLogo.rotation.x = -Math.PI / 2;
+      logoGroup.add(backLogo);
+      
+      // Add glowing outline to logos
+      const outlineGeometry = new THREE.TorusGeometry(0.5, 0.03, 16, 32);
+      const outlineMaterial = new THREE.MeshBasicMaterial({
+        color: 0xff6b00,
+        transparent: true,
+        opacity: 1,
+      });
+      
+      const frontOutline = new THREE.Mesh(outlineGeometry, outlineMaterial);
+      frontOutline.position.set(0, 0, 0.19);
+      frontOutline.rotation.x = Math.PI / 2;
+      logoGroup.add(frontOutline);
+      
+      const backOutline = new THREE.Mesh(outlineGeometry, outlineMaterial.clone());
+      backOutline.position.set(0, 0, -0.19);
+      backOutline.rotation.x = Math.PI / 2;
+      logoGroup.add(backOutline);
+      
+      return logoGroup;
+    };
+    
+    const rustLogo = createRustLogo();
+    chipGroup.add(rustLogo);
+
     // Add heat sink on top
     const heatSinkGeometry = new THREE.BoxGeometry(2, 0.6, 2);
     const heatSinkMaterial = new THREE.MeshStandardMaterial({
@@ -217,22 +504,22 @@ const GPUChipBackground = () => {
       requestAnimationFrame(animate);
       time += 0.01;
 
-      // Smooth rotation based on mouse
-      targetRotation.x = mouse.y * 0.3;
-      targetRotation.y = mouse.x * 0.3;
+      // Smooth rotation based on mouse (add to base 90-degree rotation)
+      targetRotation.x = Math.PI / 2 + mouse.y * 0.2;
+      targetRotation.y = mouse.x * 0.2;
 
       chipGroup.rotation.x += (targetRotation.x - chipGroup.rotation.x) * 0.05;
       chipGroup.rotation.y += (targetRotation.y - chipGroup.rotation.y) * 0.05;
 
-      // Constant slow rotation
-      chipGroup.rotation.y += 0.002;
+      // Constant slow rotation around Z-axis (since chip is rotated)
+      chipGroup.rotation.z += 0.002;
 
       // Subtle floating animation
       chipGroup.position.y = Math.sin(time * 0.5) * 0.1;
 
       // React to scroll
       const scrollOffset = scrollY * 0.001;
-      chipGroup.rotation.x = scrollOffset * 0.5 + targetRotation.x;
+      chipGroup.rotation.z += scrollOffset * 0.0005;
 
       // Animate connection points (pulsing glow)
       connectionPoints.children.forEach((point) => {
@@ -254,6 +541,35 @@ const GPUChipBackground = () => {
       // Animate glow lights
       glowLight1.intensity = Math.sin(time * 1.5) * 0.3 + 1;
       glowLight2.intensity = Math.cos(time * 1.5) * 0.3 + 1;
+
+      // Animate glowing wires - bright orange pulsing
+      glowingWires.children.forEach((wire) => {
+        const mesh = wire as THREE.Mesh;
+        const material = mesh.material as THREE.MeshBasicMaterial;
+        const userData = mesh.userData as { baseColor: number; pulseOffset: number };
+        
+        // Strong pulsing glow effect
+        const pulse = Math.sin(time * 2.5 + userData.pulseOffset) * 0.5 + 0.5;
+        material.opacity = 0.7 + pulse * 0.3;
+        
+        // Bright orange with intensity variation
+        const intensity = 0.8 + pulse * 0.2;
+        material.color.setRGB(1.0 * intensity, 0.42 * intensity, 0 * intensity);
+      });
+
+      // Animate Rust logo glow
+      rustLogo.children.forEach((logoMesh) => {
+        const mesh = logoMesh as THREE.Mesh;
+        const material = mesh.material as THREE.MeshBasicMaterial;
+        
+        // Strong pulsing for the logo
+        const pulse = Math.sin(time * 1.5) * 0.3 + 0.7;
+        material.opacity = pulse;
+        
+        // Vary intensity
+        const intensity = 0.9 + Math.sin(time * 1.5) * 0.1;
+        material.color.setRGB(1.0 * intensity, 0.42 * intensity, 0);
+      });
 
       composer.render();
     };
