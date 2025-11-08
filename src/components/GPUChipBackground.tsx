@@ -618,16 +618,16 @@ const GPUChipBackground = () => {
         );
       }
 
-      // Smooth rotation based on mouse
-      targetRotation.x = Math.PI / 2 + mouse.y * 0.2;
-      targetRotation.y = mouse.x * 0.2;
+      // Smooth rotation based on mouse - DISABLED
+      // targetRotation.x = Math.PI / 2 + mouse.y * 0.2;
+      // targetRotation.y = mouse.x * 0.2;
 
-      chipGroup.rotation.x += (targetRotation.x - chipGroup.rotation.x) * 0.05;
-      chipGroup.rotation.y += (targetRotation.y - chipGroup.rotation.y) * 0.05;
+      // chipGroup.rotation.x += (targetRotation.x - chipGroup.rotation.x) * 0.05;
+      // chipGroup.rotation.y += (targetRotation.y - chipGroup.rotation.y) * 0.05;
 
-      // React to scroll
-      const scrollOffset = scrollY * 0.001;
-      chipGroup.rotation.z += scrollOffset * 0.0005;
+      // React to scroll - DISABLED
+      // const scrollOffset = scrollY * 0.001;
+      // chipGroup.rotation.z += scrollOffset * 0.0005;
 
       // Animate connection points (pulsing glow)
       connectionPoints.children.forEach((point) => {
