@@ -20,6 +20,7 @@ import {
   Sun,
 } from "lucide-react";
 import DocsSection from "./components/DocsSection";
+import InteractiveExamples from "./components/InteractiveExamples";
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -522,6 +523,9 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Interactive Examples Section */}
+      <InteractiveExamples />
 
       {/* Documentation Section */}
       <DocsSection />
