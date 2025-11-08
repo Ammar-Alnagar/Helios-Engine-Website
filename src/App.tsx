@@ -22,12 +22,18 @@ import {
 import DocsSection from "./components/DocsSection";
 import InteractiveExamples from "./components/InteractiveExamples";
 import LoadingScreen from "./components/LoadingScreen";
+import ParallaxBackground from "./components/ParallaxBackground";
+import ScrollSection from "./components/ScrollSection";
+import { useSmoothScroll } from "./hooks/useSmoothScroll";
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [version, setVersion] = useState("...");
   const [isLoading, setIsLoading] = useState(true);
+
+  // Enable smooth scroll with snap behavior
+  useSmoothScroll();
 
   useEffect(() => {
     fetch("https://img.shields.io/crates/v/helios-engine.svg")
@@ -121,13 +127,6 @@ function App() {
     },
   ];
 
-  const stats = [
-    { value: "16+", label: "Built-in Tools" },
-    { value: "3", label: "Model Modes" },
-    { value: "100%", label: "Rust Native" },
-    { value: "24/7", label: "Documentation" },
-  ];
-
   return (
     <>
       {/* Loading Screen */}
@@ -139,7 +138,10 @@ function App() {
 
       {/* Main Content */}
       {!isLoading && (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
+        <div className="min-h-screen relative transition-colors duration-300">
+      {/* Parallax Background */}
+      <ParallaxBackground />
+      
       {/* Navigation */}
       <nav className="fixed top-0 w-full nav-bg border-b z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -266,8 +268,8 @@ function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <ScrollSection className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -341,34 +343,10 @@ function App() {
             </div>
           </motion.div>
         </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-16 bg-white dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-orange-600 mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-gray-600 dark:text-gray-400 font-medium">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      </ScrollSection>
 
       {/* Features Section */}
-      <section id="features" className="py-20 bg-gray-50 dark:bg-gray-800">
+      <ScrollSection id="features" className="py-20 bg-gray-50/50 dark:bg-gray-800/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -423,10 +401,10 @@ function App() {
             ))}
           </div>
         </div>
-      </section>
+      </ScrollSection>
 
       {/* Code Example Section */}
-      <section id="examples" className="py-20 bg-white dark:bg-gray-900">
+      <ScrollSection id="examples" className="py-20 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -534,16 +512,20 @@ function App() {
             </motion.div>
           </div>
         </div>
-      </section>
+      </ScrollSection>
 
       {/* Interactive Examples Section */}
-      <InteractiveExamples />
+      <div data-scroll-section className="relative min-h-screen flex items-center justify-center">
+        <InteractiveExamples />
+      </div>
 
       {/* Documentation Section */}
-      <DocsSection />
+      <div data-scroll-section className="relative min-h-screen flex items-center justify-center">
+        <DocsSection />
+      </div>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-orange-600 to-orange-500">
+      <ScrollSection className="py-20 bg-gradient-to-r from-orange-600 to-orange-500 relative">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -587,11 +569,11 @@ function App() {
             </div>
           </motion.div>
         </div>
-      </section>
+      </ScrollSection>
 
       {/* Footer */}
-      <footer className="bg-gray-900 dark:bg-black text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer data-scroll-section className="bg-gray-900 dark:bg-black text-white py-12 relative min-h-screen flex items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
