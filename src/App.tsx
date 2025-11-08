@@ -305,7 +305,7 @@ function App() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <motion.a
-                href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/QUICKSTART.md"
+                href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/GETTING_STARTED.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
@@ -544,7 +544,7 @@ function App() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.a
-                href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/QUICKSTART.md"
+                href="https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/GETTING_STARTED.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}

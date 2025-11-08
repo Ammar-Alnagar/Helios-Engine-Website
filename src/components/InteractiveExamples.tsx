@@ -610,7 +610,7 @@ failures, making your code more robust and reliable.
     <section 
       ref={sectionRef}
       id="interactive-examples" 
-      className={`py-20 bg-gray-50/50 dark:bg-gray-800/50 backdrop-blur-sm`}
+      className={`py-20`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div

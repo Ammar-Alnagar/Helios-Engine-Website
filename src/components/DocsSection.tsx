@@ -10,9 +10,9 @@ const DocsSection = () => {
       title: "Getting Started",
       description: "Quick start guides and tutorials",
       items: [
-        { name: "QUICKSTART.md", description: "5-minute setup guide", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/QUICKSTART.md" },
-        { name: "INSTALLATION.md", description: "Complete installation instructions", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/INSTALLATION.md" },
-        { name: "TUTORIAL.md", description: "Step-by-step agent building", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/TUTORIAL.md" }
+        { name: "QUICKSTART.md", description: "5-minute setup guide", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" },
+        { name: "INSTALLATION.md", description: "Complete installation instructions", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" },
+        { name: "TUTORIAL.md", description: "Step-by-step agent building", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" }
       ],
       color: "from-blue-500 to-cyan-500"
     },
@@ -21,9 +21,9 @@ const DocsSection = () => {
       title: "API Reference",
       description: "Complete technical documentation",
       items: [
-        { name: "API.md", description: "Function signatures and usage", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/API.md" },
-        { name: "USAGE.md", description: "CLI patterns and examples", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/USAGE.md" },
-        { name: "CONFIGURATION.md", description: "All provider configurations", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/CONFIGURATION.md" }
+        { name: "API.md", description: "Function signatures and usage", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" },
+        { name: "USAGE.md", description: "CLI patterns and examples", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" },
+        { name: "CONFIGURATION.md", description: "All provider configurations", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" }
       ],
       color: "from-green-500 to-teal-500"
     },
@@ -32,9 +32,9 @@ const DocsSection = () => {
       title: "Advanced Features",
       description: "Deep technical capabilities",
       items: [
-        { name: "ADVANCED.md", description: "Forest of Agents & performance", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/ADVANCED.md" },
-        { name: "RAG.md", description: "Retrieval-Augmented Generation", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/RAG.md" },
-        { name: "STREAMING.md", description: "Real-time response streaming", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/STREAMING.md" }
+        { name: "ADVANCED.md", description: "Forest of Agents & performance", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" },
+        { name: "RAG.md", description: "Retrieval-Augmented Generation", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" },
+        { name: "STREAMING.md", description: "Real-time response streaming", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" }
       ],
       color: "from-purple-500 to-pink-500"
     },
@@ -43,9 +43,9 @@ const DocsSection = () => {
       title: "Tools & Integration",
       description: "Built-in tools and custom development",
       items: [
-        { name: "TOOLS.md", description: "16+ built-in tools guide", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/TOOLS.md" },
-        { name: "USING_AS_CRATE.md", description: "Rust library integration", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/USING_AS_CRATE.md" },
-        { name: "IMPLEMENTATION_SUMMARY.md", description: "Technical implementation", link: "https://github.com/Ammar-Alnagar/Helios-Engine/blob/master/docs/IMPLEMENTATION_SUMMARY.md" }
+        { name: "TOOLS.md", description: "16+ built-in tools guide", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" },
+        { name: "USING_AS_CRATE.md", description: "Rust library integration", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" },
+        { name: "IMPLEMENTATION_SUMMARY.md", description: "Technical implementation", link: "https://github.com/Ammar-Alnagar/Helios-Engine/tree/master/docs" }
       ],
       color: "from-orange-500 to-red-500"
     }
@@ -63,7 +63,7 @@ const DocsSection = () => {
   return (
     <section 
       id="docs" 
-      className={`py-20 bg-gray-50/50 dark:bg-gray-800/50 backdrop-blur-sm`}
+      className={`py-20`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
