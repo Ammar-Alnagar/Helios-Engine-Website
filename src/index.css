@@ -216,4 +216,85 @@
     transform: scale(0.98);
     pointer-events: none;
   }
+
+  /* Container side fade - makes container blend into background */
+  .container-fade-gray {
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  }
+
+  .container-fade-white {
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  }
+
+  /* Section wrapper fade - applies overlay gradient on the section itself */
+  .section-edge-fade-gray {
+    position: relative;
+  }
+
+  .section-edge-fade-gray::before,
+  .section-edge-fade-gray::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .section-edge-fade-gray::before {
+    left: 0;
+    background: linear-gradient(to right, rgb(249 250 251) 0%, transparent 100%);
+  }
+
+  .section-edge-fade-gray::after {
+    right: 0;
+    background: linear-gradient(to left, rgb(249 250 251) 0%, transparent 100%);
+  }
+
+  .dark .section-edge-fade-gray::before {
+    background: linear-gradient(to right, rgb(31 41 55) 0%, transparent 100%);
+  }
+
+  .dark .section-edge-fade-gray::after {
+    background: linear-gradient(to left, rgb(31 41 55) 0%, transparent 100%);
+  }
+
+  /* Section wrapper fade for white backgrounds */
+  .section-edge-fade-white {
+    position: relative;
+  }
+
+  .section-edge-fade-white::before,
+  .section-edge-fade-white::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .section-edge-fade-white::before {
+    left: 0;
+    background: linear-gradient(to right, rgb(255 255 255) 0%, transparent 100%);
+  }
+
+  .section-edge-fade-white::after {
+    right: 0;
+    background: linear-gradient(to left, rgb(255 255 255) 0%, transparent 100%);
+  }
+
+  .dark .section-edge-fade-white::before {
+    background: linear-gradient(to right, rgb(17 24 39) 0%, transparent 100%);
+  }
+
+  .dark .section-edge-fade-white::after {
+    background: linear-gradient(to left, rgb(17 24 39) 0%, transparent 100%);
+  }
 }

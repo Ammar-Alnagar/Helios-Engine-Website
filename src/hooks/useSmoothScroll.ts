@@ -7,9 +7,8 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export const useSmoothScroll = () => {
   useEffect(() => {
-    let scrollTimeout: number;
+    let scrollTimeout: ReturnType<typeof setTimeout>;
     let isScrolling = false;
-    let lastScrollY = window.scrollY;
 
     const sections = document.querySelectorAll('[data-scroll-section]');
     
@@ -29,9 +28,7 @@ export const useSmoothScroll = () => {
     };
 
     const findClosestSection = () => {
-      const scrollPos = window.scrollY;
       const viewportHeight = window.innerHeight;
-      lastScrollY = scrollPos;
 
       let closestSection: Element | null = null;
       let smallestDistance = Infinity;
@@ -61,7 +58,7 @@ export const useSmoothScroll = () => {
         const closestSection = findClosestSection();
         
         if (closestSection) {
-          const rect = closestSection.getBoundingClientRect();
+          const rect = (closestSection as HTMLElement).getBoundingClientRect();
           const viewportHeight = window.innerHeight;
           const sectionMiddle = rect.top + rect.height / 2;
           const distanceFromCenter = Math.abs(sectionMiddle - viewportHeight / 2);
