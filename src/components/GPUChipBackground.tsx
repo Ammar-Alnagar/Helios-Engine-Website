@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { EffectComposer, RenderPass, UnrealBloomPass } from "three-stdlib";
-import { TextureLoader } from "three";
 
 const GPUChipBackground = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -441,73 +440,96 @@ const GPUChipBackground = () => {
     const glowingWires = createGlowingWires();
     chipGroup.add(glowingWires);
 
-    // Create Rust Logo with Orange Glow using texture
+    // Create Rust Logo with Orange Glow using geometry (gear/cog shape)
     const createRustLogo = () => {
       const logoGroup = new THREE.Group();
 
-      // Load the Rust logo texture
-      const textureLoader = new TextureLoader();
-      const rustTexture = textureLoader.load("/rust_transparent.webp");
+      // Create Rust gear/cog shape
+      const createGearShape = () => {
+        const shape = new THREE.Shape();
+        const outerRadius = 0.4;
+        const innerRadius = 0.28;
+        const teethCount = 8;
+        const teethDepth = 0.08;
+        const teethWidth = 0.15;
 
-      // Create plane geometry for the logo
-      const logoGeometry = new THREE.PlaneGeometry(0.8, 0.8);
+        // Draw outer gear with teeth
+        for (let i = 0; i < teethCount; i++) {
+          const angle1 = (i / teethCount) * Math.PI * 2;
+          const angle2 = ((i + 0.5) / teethCount) * Math.PI * 2;
 
-      // ORANGE glowing material with texture
-      const logoMaterial = new THREE.MeshBasicMaterial({
-        map: rustTexture,
-        transparent: true,
-        opacity: 1.0,
-        side: THREE.DoubleSide,
-        color: 0xff6b00, // Orange tint
+          // Tooth tip
+          const tipX1 = Math.cos(angle1) * outerRadius;
+          const tipY1 = Math.sin(angle1) * outerRadius;
+          const tipX2 =
+            Math.cos(angle1 + (teethWidth / teethCount) * Math.PI * 2) *
+            outerRadius;
+          const tipY2 =
+            Math.sin(angle1 + (teethWidth / teethCount) * Math.PI * 2) *
+            outerRadius;
+
+          // Inner part between teeth
+          const innerX = Math.cos(angle2) * (outerRadius - teethDepth);
+          const innerY = Math.sin(angle2) * (outerRadius - teethDepth);
+
+          if (i === 0) {
+            shape.moveTo(tipX1, tipY1);
+          }
+          shape.lineTo(tipX2, tipY2);
+          shape.lineTo(innerX, innerY);
+        }
+        shape.closePath();
+
+        // Create center hole
+        const holePath = new THREE.Path();
+        holePath.absarc(0, 0, innerRadius * 0.5, 0, Math.PI * 2, false);
+        shape.holes.push(holePath);
+
+        return shape;
+      };
+
+      const gearShape = createGearShape();
+      const extrudeSettings = {
+        depth: 0.08,
+        bevelEnabled: true,
+        bevelThickness: 0.02,
+        bevelSize: 0.02,
+        bevelSegments: 3,
+      };
+
+      const logoGeometry = new THREE.ExtrudeGeometry(
+        gearShape,
+        extrudeSettings,
+      );
+
+      // ORANGE glowing material
+      const logoMaterial = new THREE.MeshStandardMaterial({
+        color: 0xff6b00,
+        metalness: 0.8,
+        roughness: 0.3,
+        emissive: 0xff6b00,
+        emissiveIntensity: 2.0,
       });
 
-      // Create the main logo plane
+      // Create the main logo - ON TOP OF HEAT SINK
       const logo = new THREE.Mesh(logoGeometry, logoMaterial);
       logo.rotation.x = Math.PI / 2;
-      logo.position.set(0, 0.2, 0);
+      logo.position.set(0, 0.8, 0);
       logoGroup.add(logo);
 
-      // Add MULTIPLE bright orange glow planes behind it
+      // Add bright orange glow planes behind it - REDUCED OPACITY
       const glowGeometry1 = new THREE.CircleGeometry(0.6, 32);
       const glowMaterial1 = new THREE.MeshBasicMaterial({
         color: 0xff6b00,
         transparent: true,
-        opacity: 0.9,
+        opacity: 0.3,
         side: THREE.DoubleSide,
         blending: THREE.AdditiveBlending,
       });
       const glow1 = new THREE.Mesh(glowGeometry1, glowMaterial1);
-      glow1.position.set(0, 0.19, 0);
+      glow1.position.set(0, 0.79, 0); // MOVED UP to be on heat sink
       glow1.rotation.x = Math.PI / 2;
       logoGroup.add(glow1);
-
-      // Second glow layer for extra brightness
-      const glowGeometry2 = new THREE.CircleGeometry(0.8, 32);
-      const glowMaterial2 = new THREE.MeshBasicMaterial({
-        color: 0xff6b00,
-        transparent: true,
-        opacity: 0.6,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending,
-      });
-      const glow2 = new THREE.Mesh(glowGeometry2, glowMaterial2);
-      glow2.position.set(0, 0.18, 0);
-      glow2.rotation.x = Math.PI / 2;
-      logoGroup.add(glow2);
-
-      // Third glow layer for maximum effect
-      const glowGeometry3 = new THREE.CircleGeometry(1.0, 32);
-      const glowMaterial3 = new THREE.MeshBasicMaterial({
-        color: 0xff8800,
-        transparent: true,
-        opacity: 0.4,
-        side: THREE.DoubleSide,
-        blending: THREE.AdditiveBlending,
-      });
-      const glow3 = new THREE.Mesh(glowGeometry3, glowMaterial3);
-      glow3.position.set(0, 0.17, 0);
-      glow3.rotation.x = Math.PI / 2;
-      logoGroup.add(glow3);
 
       return logoGroup;
     };
@@ -562,17 +584,17 @@ const GPUChipBackground = () => {
     glowLight2.position.set(-2, 1, -2);
     scene.add(glowLight2);
 
-    // RUST logo lights - EXTREMELY bright ORANGE for maximum visibility
-    const rustLight1 = new THREE.PointLight(0xff6b00, 5.0, 10); // MUCH BRIGHTER
+    // RUST logo lights - REDUCED intensity for better logo visibility
+    const rustLight1 = new THREE.PointLight(0xff6b00, 2.5, 10);
     rustLight1.position.set(0, 1, 0);
     scene.add(rustLight1);
 
-    const rustLight2 = new THREE.PointLight(0xff6b00, 4.0, 12); // MUCH BRIGHTER
+    const rustLight2 = new THREE.PointLight(0xff6b00, 2.0, 12);
     rustLight2.position.set(0, 0.5, 0);
     scene.add(rustLight2);
 
     // Additional spotlight for the logo
-    const rustSpotlight = new THREE.SpotLight(0xff6b00, 3.0);
+    const rustSpotlight = new THREE.SpotLight(0xff6b00, 1.5);
     rustSpotlight.position.set(0, 3, 0);
     rustSpotlight.target.position.set(0, 0, 0);
     rustSpotlight.angle = Math.PI / 6;
@@ -642,9 +664,9 @@ const GPUChipBackground = () => {
       glowLight1.intensity = Math.sin(time * 1.5) * 0.3 + 1;
       glowLight2.intensity = Math.cos(time * 1.5) * 0.3 + 1;
 
-      // Animate RUST logo lights - VERY strong pulsing for visibility
-      rustLight1.intensity = 4.0 + Math.sin(time * 2) * 1.5;
-      rustLight2.intensity = 3.0 + Math.cos(time * 2.3) * 1.5;
+      // Animate RUST logo lights - REDUCED pulsing for better logo visibility
+      rustLight1.intensity = 2.0 + Math.sin(time * 2) * 0.5;
+      rustLight2.intensity = 1.5 + Math.cos(time * 2.3) * 0.5;
 
       // ANIMATE WIRES - Make them move and pulse! DRAMATIC MOVEMENT
       glowingWires.children.forEach((wire, index) => {
@@ -713,15 +735,18 @@ const GPUChipBackground = () => {
         }
       });
 
-      // Animate RUST logo - DRAMATIC pulsing glow
+      // Animate RUST logo - CONSTANT glow (no pulsing)
       rustLogo.children.forEach((child) => {
         const mesh = child as THREE.Mesh;
-        const material = mesh.material as THREE.MeshBasicMaterial;
+        const material = mesh.material as
+          | THREE.MeshStandardMaterial
+          | THREE.MeshBasicMaterial;
 
-        const pulse = Math.sin(time * 1.8) * 0.4 + 0.8;
-
-        if (material instanceof THREE.MeshBasicMaterial) {
-          material.opacity = 0.6 + pulse * 0.4;
+        // Keep constant emissive intensity - no pulsing
+        if (material instanceof THREE.MeshStandardMaterial) {
+          material.emissiveIntensity = 2.0; // Fixed intensity
+        } else if (material instanceof THREE.MeshBasicMaterial) {
+          material.opacity = 0.3; // Fixed opacity
         }
       });
 
