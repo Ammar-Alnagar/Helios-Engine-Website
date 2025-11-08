@@ -39,106 +39,67 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-orange-900"
     >
       <div className="text-center">
-        {/* Dancing Ferris */}
-        <motion.div
-          animate={{
-            y: [0, -20, 0],
-            rotate: [-5, 5, -5],
-          }}
-          transition={{
-            duration: 0.6,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-          className="mb-8"
-        >
-          {/* Ferris the Crab SVG */}
-          <svg
-            width="200"
-            height="200"
-            viewBox="0 0 512 512"
-            className="mx-auto drop-shadow-2xl"
+        {/* Helios Engine Logo with Rotating Rust Gear */}
+        <div className="relative mb-8 flex items-center justify-center w-[300px] h-[300px] mx-auto">
+          {/* Rotating Rust Gear Background */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
           >
-            {/* Main body */}
-            <motion.ellipse
-              cx="256"
-              cy="300"
-              rx="140"
-              ry="120"
-              fill="#FF6B35"
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 0.6, repeat: Infinity }}
-            />
-            
-            {/* Eyes */}
-            <motion.g
-              animate={{ y: [0, -5, 0] }}
-              transition={{ duration: 0.4, repeat: Infinity }}
+            <svg
+              width="300"
+              height="300"
+              viewBox="0 0 500 500"
+              className="absolute"
             >
-              <ellipse cx="210" cy="270" rx="25" ry="30" fill="white" />
-              <ellipse cx="302" cy="270" rx="25" ry="30" fill="white" />
-              <circle cx="210" cy="275" r="12" fill="#2D3748" />
-              <circle cx="302" cy="275" r="12" fill="#2D3748" />
-              <circle cx="215" cy="270" r="6" fill="white" />
-              <circle cx="307" cy="270" r="6" fill="white" />
-            </motion.g>
+              {/* Gear outer ring */}
+              <circle cx="250" cy="250" r="220" fill="none" stroke="#CE412B" strokeWidth="10" opacity="0.3" />
+              
+              {/* Gear teeth */}
+              {[...Array(12)].map((_, i) => {
+                const angle = (i * 30 * Math.PI) / 180
+                const x1 = 250 + 210 * Math.cos(angle)
+                const y1 = 250 + 210 * Math.sin(angle)
+                const x2 = 250 + 240 * Math.cos(angle)
+                const y2 = 250 + 240 * Math.sin(angle)
+                return (
+                  <g key={i}>
+                    <line
+                      x1={x1}
+                      y1={y1}
+                      x2={x2}
+                      y2={y2}
+                      stroke="#CE412B"
+                      strokeWidth="25"
+                      strokeLinecap="round"
+                      opacity="0.4"
+                    />
+                  </g>
+                )
+              })}
+              
+              {/* Inner gear circle */}
+              <circle cx="250" cy="250" r="180" fill="none" stroke="#E67E22" strokeWidth="8" opacity="0.2" />
+            </svg>
+          </motion.div>
 
-            {/* Smile */}
-            <motion.path
-              d="M 220 310 Q 256 330 292 310"
-              stroke="#2D3748"
-              strokeWidth="6"
-              fill="none"
-              strokeLinecap="round"
-              animate={{ d: ["M 220 310 Q 256 330 292 310", "M 220 310 Q 256 340 292 310"] }}
-              transition={{ duration: 0.6, repeat: Infinity }}
-            />
-
-            {/* Left claw */}
-            <motion.g
-              animate={{ rotate: [-10, 10, -10] }}
-              transition={{ duration: 0.5, repeat: Infinity }}
-              style={{ originX: '180px', originY: '280px' }}
-            >
-              <ellipse cx="130" cy="280" rx="40" ry="25" fill="#FF6B35" transform="rotate(-30 130 280)" />
-              <path d="M 110 270 L 90 260 L 95 275 Z" fill="#FF6B35" />
-              <path d="M 110 285 L 90 295 L 95 280 Z" fill="#FF6B35" />
-            </motion.g>
-
-            {/* Right claw */}
-            <motion.g
-              animate={{ rotate: [10, -10, 10] }}
-              transition={{ duration: 0.5, repeat: Infinity }}
-              style={{ originX: '332px', originY: '280px' }}
-            >
-              <ellipse cx="382" cy="280" rx="40" ry="25" fill="#FF6B35" transform="rotate(30 382 280)" />
-              <path d="M 402 270 L 422 260 L 417 275 Z" fill="#FF6B35" />
-              <path d="M 402 285 L 422 295 L 417 280 Z" fill="#FF6B35" />
-            </motion.g>
-
-            {/* Legs */}
-            <motion.g
-              animate={{ scaleY: [1, 0.9, 1] }}
-              transition={{ duration: 0.3, repeat: Infinity }}
-            >
-              <rect x="190" y="390" width="20" height="40" rx="10" fill="#FF6B35" />
-              <rect x="250" y="390" width="20" height="40" rx="10" fill="#FF6B35" />
-              <rect x="310" y="390" width="20" height="40" rx="10" fill="#FF6B35" />
-            </motion.g>
-
-            {/* Antenna */}
-            <motion.g
-              animate={{ rotate: [-15, 15, -15] }}
-              transition={{ duration: 0.4, repeat: Infinity }}
-              style={{ originX: '256px', originY: '180px' }}
-            >
-              <line x1="230" y1="190" x2="220" y2="160" stroke="#FF6B35" strokeWidth="8" strokeLinecap="round" />
-              <line x1="282" y1="190" x2="292" y2="160" stroke="#FF6B35" strokeWidth="8" strokeLinecap="round" />
-              <circle cx="220" cy="155" r="12" fill="#FFD700" />
-              <circle cx="292" cy="155" r="12" fill="#FFD700" />
-            </motion.g>
-          </svg>
-        </motion.div>
+          {/* Static Helios Engine Logo */}
+          <motion.div
+            className="relative z-10"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="w-52 h-52 rounded-full overflow-hidden bg-white dark:bg-gray-800 shadow-2xl border-4 border-orange-400 dark:border-orange-600">
+              <img
+                src="/helios-logo.png"
+                alt="Helios Engine"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </motion.div>
+        </div>
 
         {/* Loading text */}
         <motion.div
