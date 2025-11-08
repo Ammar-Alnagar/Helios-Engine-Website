@@ -1,7 +1,34 @@
 import { motion } from 'framer-motion'
 import { FileText, BookOpen, Code, Settings, Users, Database, Zap, ChevronRight } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
 
 const DocsSection = () => {
+  const [isFading, setIsFading] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Fade effect on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        
+        // Check if section is scrolling out of view
+        // Start fading when the section is about to exit viewport
+        if (rect.top < -windowHeight * 0.2) {
+          setIsFading(true)
+        } else {
+          setIsFading(false)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Initial check
+    
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const docs = [
     {
       icon: <BookOpen className="w-6 h-6" />,
@@ -59,7 +86,11 @@ const DocsSection = () => {
   ]
 
   return (
-    <section id="docs" className="py-20 bg-white dark:bg-gray-900">
+    <section 
+      ref={sectionRef}
+      id="docs" 
+      className={`py-20 bg-white dark:bg-gray-900 fade-section ${isFading ? 'fading' : ''}`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

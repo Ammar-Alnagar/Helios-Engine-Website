@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export const useSmoothScroll = () => {
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
+    let scrollTimeout: number;
     let isScrolling = false;
     let lastScrollY = window.scrollY;
 
@@ -17,11 +17,10 @@ export const useSmoothScroll = () => {
       if (isScrolling) return;
       
       isScrolling = true;
-      const sectionTop = (section as HTMLElement).offsetTop;
       
       gsap.to(window, {
         duration: 0.8,
-        scrollTo: { y: sectionTop, autoKill: false },
+        scrollTo: { y: (section as HTMLElement).offsetTop, autoKill: false },
         ease: 'power2.inOut',
         onComplete: () => {
           isScrolling = false;
@@ -32,7 +31,6 @@ export const useSmoothScroll = () => {
     const findClosestSection = () => {
       const scrollPos = window.scrollY;
       const viewportHeight = window.innerHeight;
-      const scrollDirection = scrollPos > lastScrollY ? 'down' : 'up';
       lastScrollY = scrollPos;
 
       let closestSection: Element | null = null;
@@ -40,7 +38,6 @@ export const useSmoothScroll = () => {
 
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
-        const sectionTop = rect.top;
         const sectionMiddle = rect.top + rect.height / 2;
         
         // Calculate distance from viewport center

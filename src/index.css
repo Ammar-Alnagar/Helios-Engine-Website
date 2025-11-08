@@ -205,4 +205,15 @@
   .terminal-text {
     color: rgb(var(--color-text-primary));
   }
+
+  /* Fade into background effect for scroll sections */
+  .fade-section {
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  }
+
+  .fade-section.fading {
+    opacity: 0.3;
+    transform: scale(0.98);
+    pointer-events: none;
+  }
 }

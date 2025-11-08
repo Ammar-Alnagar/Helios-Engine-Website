@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Play, X, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface Example {
   id: string
@@ -19,6 +19,8 @@ const InteractiveExamples = () => {
   const [displayedCode, setDisplayedCode] = useState<{ [key: string]: string }>({})
   const [isCodeStreaming, setIsCodeStreaming] = useState<{ [key: string]: boolean }>({})
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [isFading, setIsFading] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
 
   const examples: Example[] = [
     {
@@ -585,6 +587,29 @@ failures, making your code more robust and reliable.
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [currentIndex])
 
+  // Fade effect on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        
+        // Check if section is scrolling out of view
+        // Start fading when the section is about to exit viewport
+        if (rect.top < -windowHeight * 0.2) {
+          setIsFading(true)
+        } else {
+          setIsFading(false)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll() // Initial check
+    
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const nextExample = () => {
     setCurrentIndex((prev) => (prev + 1) % examples.length)
     setActiveExample(null)
@@ -604,7 +629,11 @@ failures, making your code more robust and reliable.
   }
 
   return (
-    <section id="interactive-examples" className="py-20 bg-gray-50 dark:bg-gray-800">
+    <section 
+      ref={sectionRef}
+      id="interactive-examples" 
+      className={`py-20 bg-gray-50 dark:bg-gray-800 fade-section ${isFading ? 'fading' : ''}`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
